@@ -117,6 +117,13 @@
             <label for="flatpickr-date">Tanggal Diterima</label>
           </div>
           <div class="form-floating form-floating-outline mb-4">
+            <input type="text" name="perihal" class="form-control" id="bs-validation-name" placeholder="Perihal" required="" value="{{ old('perihal') }}">
+            <label for="bs-validation-name">Perihal</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please enter perihal. </div>
+          </div>
+
+          <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="pelapor" class="form-control" id="bs-validation-name" placeholder="Nama Pelapor" required="" value="{{ old('pelapor') }}">
             <label for="bs-validation-name">Nama Pelapor</label>
             <div class="valid-feedback"> Looks good! </div>
@@ -141,12 +148,6 @@
             <div class="col-12">
               <button type="button" class="btn btn-sm btn-primary" data-repeater-create id="tambah_terlapor"><i class="mdi mdi-plus me-1"></i> Tambah Terlapor</button>
             </div>
-          </div>
-          <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="perihal" class="form-control" id="bs-validation-name" placeholder="Perihal" required="" value="{{ old('perihal') }}">
-            <label for="bs-validation-name">Perihal</label>
-            <div class="valid-feedback"> Looks good! </div>
-            <div class="invalid-feedback"> Please enter perihal. </div>
           </div>
 
           @if (auth()->user()->username == 'administrator')

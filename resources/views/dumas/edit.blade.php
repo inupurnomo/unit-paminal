@@ -62,17 +62,33 @@
             <label for="flatpickr-date">Tanggal Diterima</label>
           </div>
           <div class="form-floating form-floating-outline mb-4">
+            <input type="text" name="perihal" class="form-control" id="bs-validation-name" placeholder="Perihal" required="" value="{{ $dumas->perihal }}">
+            <label for="bs-validation-name">Perihal</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please enter perihal. </div>
+          </div>
+
+          <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="pelapor" class="form-control" id="bs-validation-name" placeholder="Nama Pelapor" required="" value="{{ $dumas->pelapor }}">
             <label for="bs-validation-name">Nama Pelapor</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter your name. </div>
           </div>
+          <hr />
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="terlapor" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="" value="{{ $dumas->terlapor }}">
+            <input type="text" name="satker" class="form-control" id="bs-validation-name" placeholder="Satker" required="" value="{{ $dumas->satker }}">
+            <label for="satker">Satker</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please enter satker. </div>
+          </div>
+          @foreach ($dumas->terlapor as $t)              
+          <div class="form-floating form-floating-outline mb-4">
+            <input type="text" name="terlapor" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="" value="{{ $t->name }}">
             <label for="bs-validation-name">Nama Terlapor</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter your name. </div>
           </div>
+          @endforeach
           <div class="form-floating form-floating-outline mb-4">
             <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true">
               <option value="">Pilih Penanggung Jawab</option>
