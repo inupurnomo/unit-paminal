@@ -15,6 +15,8 @@ class Dumas extends Model
       'perihal',
       'satker',
       'pj_id',
+      'den_id',
+      'unit_id',
       'is_done',
     ];
 
@@ -105,11 +107,22 @@ class Dumas extends Model
     public function sprin() {
       return $this->hasOne(Sprin::class);
     }
-    public function bai_pelapor() {
-      return $this->hasOne(BAIPelapor::class);
+    public function bai_saksi() {
+      return $this->hasOne(BAISaksi::class);
     }
     public function bai_terlapor() {
       return $this->hasOne(BAITerlapor::class);
     }
-    
+    public function sp_saksi() {
+      return $this->hasOne(PernyataanSaksi::class);
+    }
+    public function sp_terlapor() {
+      return $this->hasOne(PernyataanTerlapor::class);
+    }
+    public function nd_lhp() {
+      return $this->hasOne(NDLHP::class);
+    }
+    public function nd_lhg() {
+      return $this->hasOne(NDLHG::class);
+    }
 }

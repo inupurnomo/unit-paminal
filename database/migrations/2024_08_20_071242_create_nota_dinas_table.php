@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('dumas_id');
             $table->string('number');
             $table->string('file');
+            $table->boolean('is_archived')->default(false);
             $table->timestamps();
 
             $table->foreign('dumas_id')->references('id')->on('dumas')->onDelete('cascade');

@@ -513,7 +513,7 @@ function addParamToUrl(param, value) {
               </div>
               @else
               <div class="mb-4">
-                <div><a href="{{$dumas->nd->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Nota Dinas">{{ $dumas->nd->number }}</a></div>
+                <div><a href="{{$dumas->nd->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Nota Dinas">{{ $dumas->nd->number }}</a> <span class="badge bg-label-{{ $dumas->nd->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
               </div>
               @endif
 
@@ -533,8 +533,8 @@ function addParamToUrl(param, value) {
               </div>
               @else
               <div class="mb-4">
-                @if (!$dumas->nd->file && $dumas->sprin)
-                <div><a href="{{$dumas->sprin->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">{{ $dumas->sprin->number }}</a></div>
+                @if ($dumas->sprin->file)
+                <div><a href="{{$dumas->sprin->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sprin->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sprin->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
                 @else
                 <div>Upload Dokumen Nota Dinas terlebih dahulu!</div>
                 @endif
@@ -543,42 +543,42 @@ function addParamToUrl(param, value) {
 
               <div class="divider">
                 <div class="divider-text">
-                  Pelapor
+                  Saksi
                 </div>
               </div>
 
-              <h5>Dokumen BAI Pelapor</h5>
-              @if ($dumas->sprin && !$dumas->bai_pelapor)
+              <h5>Dokumen BAI Saksi</h5>
+              @if ($dumas->sprin && !$dumas->bai_saksi)
               <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
-                <label for="bs-validation-name">Dokumen BAI</label>
+                <input type="file" name="bai_saksi" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen BAI SaksiI</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select BAI file. </div>
               </div>
               @else
               <div class="mb-4">
-                @if (!$dumas->sprin && $dumas->bai_pelapor)
-                <div><a href="{{$dumas->sprin->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a></div>
+                @if ($dumas->bai_saksi)
+                <div><a href="{{$dumas->bai_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->bai_saksi->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->bai_saksi->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
                 @else
                 <div class="text-danger">Upload Dokumen SPRIN terlebih dahulu!</div>
                 @endif
               </div>
               @endif
 
-              <h5>Dokumen Surat Pernyataan Pelapor</h5>
-              @if ($dumas->bai_pelapor && !$dumas->sp_pelapor)
+              <h5>Dokumen Surat Pernyataan Saksi</h5>
+              @if ($dumas->bai_saksi && !$dumas->sp_saksi)
               <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
-                <label for="bs-validation-name">Dokumen BAI</label>
+                <input type="file" name="sp_saksi" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen Surat Pernyataan</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select SP file. </div>
               </div>
               @else
               <div class="mb-4">
-                @if (!$dumas->bai_pelapor && $dumas->sp_pelapor)
-                <div><a href="{{$dumas->sp_pelapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                @if ($dumas->sp_saksi)
+                <div><a href="{{$dumas->sp_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sp_saksi->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sp_saksi->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
                 @else
-                <div class="text-danger">Upload Dokumen BAI terlebih dahulu!</div>
+                <div class="text-danger">Upload Dokumen BAI Saksi terlebih dahulu!</div>
                 @endif
               </div>
               @endif
@@ -589,17 +589,89 @@ function addParamToUrl(param, value) {
                 </div>
               </div>
 
+              <h5>Dokumen BAI Terlapor</h5>
+              @if ($dumas->sp_saksi && !$dumas->bai_terlapor)
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="file" name="bai_terlapor" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen BAI Terlapor</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select BAI file. </div>
+              </div>
+              @else
+              <div class="mb-4">
+                @if ($dumas->bai_terlapor)
+                <div><a href="{{$dumas->bai_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->bai_terlapor->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->bai_terlapor->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                @else
+                <div class="text-danger">Upload Dokumen Pernyataan Saksi terlebih dahulu!</div>
+                @endif
+              </div>
+              @endif
+
+              <h5>Dokumen Surat Pernyataan Terlapor</h5>
+              @if ($dumas->bai_terlapor && !$dumas->sp_terlapor)
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="file" name="sp_terlapor" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen BAI</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select SP file. </div>
+              </div>
+              @else
+              <div class="mb-4">
+                @if ($dumas->sp_terlapor)
+                <div><a href="{{$dumas->sp_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sp_terlapor->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sp_terlapor->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                @else
+                <div class="text-danger">Upload Dokumen BAI terlebih dahulu!</div>
+                @endif
+              </div>
+              @endif
+
               <div class="divider">
                 <div class="divider-text">
                   LHP
                 </div>
               </div>
 
+              <h5>Dokumen ND LHP</h5>
+              @if ($dumas->sp_terlapor && !$dumas->nd_lhp)
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="file" name="nd_lhp" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen ND LHP</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select SP file. </div>
+              </div>
+              @else
+              <div class="mb-4">
+                @if ($dumas->nd_lhp)
+                <div><a href="{{$dumas->nd_lhp->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->nd_lhp->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd_lhp->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                @else
+                <div class="text-danger">Upload Dokumen Surat Penyataan Terlapor terlebih dahulu!</div>
+                @endif
+              </div>
+              @endif
+
               <div class="divider">
                 <div class="divider-text">
                   LHG
                 </div>
               </div>
+
+              <h5>Dokumen ND LHG</h5>
+              @if ($dumas->nd_lhp && !$dumas->nd_lhg)
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="file" name="nd_lhg" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen ND LHG</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select SP file. </div>
+              </div>
+              @else
+              <div class="mb-4">
+                @if ($dumas->nd_lhg)
+                <div><a href="{{$dumas->nd_lhg->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->nd_lhg->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd_lhg->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                @else
+                <div class="text-danger">Upload Dokumen ND LHP terlebih dahulu!</div>
+                @endif
+              </div>
+              @endif
 
               <div class="row mt-4">
                 <div class="col">

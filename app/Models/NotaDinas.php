@@ -13,5 +13,6 @@ class NotaDinas extends Model
       'dumas_id',
       'number',
       'file',
+      'is_archived',
     ];
 }

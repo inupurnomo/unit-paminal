@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Sprin extends Model
 {
     use HasFactory;
+
+    protected $fillable = [
+      'dumas_id',
+      'file',
+      'is_archived',
+    ];
 }

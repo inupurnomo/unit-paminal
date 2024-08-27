@@ -149,6 +149,28 @@
             <div class="invalid-feedback"> Please enter perihal. </div>
           </div>
 
+          @if (auth()->user()->username == 'administrator')
+          <div class="form-floating form-floating-outline mb-4">
+            <select id="den" name="den_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
+              <option value="">Pilih Den</option>
+              @foreach ($den as $d)
+                  <option value="{{ $d->id }}">{{ $d->name }}</option>
+              @endforeach
+            </select>
+            <label for="den">Den</label>
+          </div>
+
+          <div class="form-floating form-floating-outline mb-4">
+            <select id="unit" name="unit_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
+              <option value="">Pilih Unit</option>
+              @foreach ($unit as $u)
+                  <option value="{{ $u->id }}">{{ $u->name }}</option>
+              @endforeach
+            </select>
+            <label for="unit">Unit</label>
+          </div>
+          @endif
+          
           <div class="form-floating form-floating-outline mb-4">
             <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
               <option value="">Pilih Penanggung Jawab</option>

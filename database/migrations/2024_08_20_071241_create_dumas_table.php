@@ -18,6 +18,8 @@ return new class extends Migration
             $table->string('perihal');
             $table->string('satker');
             $table->unsignedBigInteger('pj_id');
+            $table->unsignedBigInteger('den_id');
+            $table->unsignedBigInteger('unit_id');
             $table->boolean('is_done')->default(false);
             $table->timestamps();
         });

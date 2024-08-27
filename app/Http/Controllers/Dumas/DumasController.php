@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Dumas;
 
 use App\Http\Controllers\Controller;
 use App\Models\BuktiPendukung;
+use App\Models\Den;
 use App\Models\Dumas;
 use App\Models\DumasStatus;
 use App\Models\Evidence;
@@ -24,6 +25,7 @@ use App\Models\SPHPSecond;
 use App\Models\SprinLidik;
 use App\Models\StatusType;
 use App\Models\Terlapor;
+use App\Models\Unit;
 use App\Models\User;
 use App\Models\Witness;
 use Carbon\Carbon;
@@ -55,8 +57,10 @@ class DumasController extends Controller
   {
     $pageConfigs = ['myLayout' => 'horizontal'];
     $user = User::where('username', '<>', 'administrator')->get();
+    $den = Den::all();
+    $unit = Unit::all();
 
-    return view('dumas.create', ['pageConfigs' => $pageConfigs, 'user' => $user]);
+    return view('dumas.create', ['pageConfigs' => $pageConfigs, 'user' => $user, 'den' => $den, 'unit' => $unit]);
   }
 
   public function store(Request $request)
@@ -81,7 +85,16 @@ class DumasController extends Controller
     DB::beginTransaction();
 
     try {
-      $dumas = Dumas::create($request->except(['_token', 'nd', 'nd_file', 'terlapor']));
+      $dumas = Dumas::create([
+        'tanggal' => $request->tanggal,
+        'pelapor' => $request->pelapor,
+        'satker' => $request->satker,
+        'perihal' => $request->perihal,
+        'pj_id' => $request->pj_id,
+        'den_id' => $request->den_id ?? auth()->user()->den_id,
+        'unit_id' => $request->unit_id ?? auth()->user()->unit_id,
+      ]);
+
       $file_nd = $this->storeFile($request->nd_file, 'file/nd');
 
       $nd = NotaDinas::create([
