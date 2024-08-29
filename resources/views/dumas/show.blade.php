@@ -316,7 +316,7 @@ function addParamToUrl(param, value) {
             <div class="row gy-4">
               <!-- Total Transactions & Report Chart -->
               <div class="col-xl-8">
-                <div class="card h-100">
+                <div class="h-100">
                   <div class="card-body">
                     <div class="col-md mb-4 mb-md-2">
                       <div class="accordion mt-3" id="accordionExample">
