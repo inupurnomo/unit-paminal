@@ -85,12 +85,12 @@
   $(document).ready(function () {
     var no = 1;
     var noBukti = 1;
+    var noSprin = 1;
     $(document).on('click', '#tambah_saksi', function () {
       no++;
       var inputGroup = $(
         `
         <div class="saksi-add row mt-2">
-          <div class="col-md-12 d-flex flex-row justify-content-between align-items-center"></div>
           <div class="row">
             <div class="col-sm-12 col-md-6">
               <div class="form-floating form-floating-outline mb-2">
@@ -130,7 +130,6 @@
       var inputGroup = $(
         `
         <div class="bukti-add row mt-2">
-          <div class="col-md-12 d-flex flex-row justify-content-between align-items-center"></div>
           <div class="row">
             <div class="form-floating form-floating-outline col-sm-12 col-md-4">
               <select id="select2Basic" name="evidence_type[]" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
@@ -166,6 +165,38 @@
 
       $('#bukti').append(inputGroup);
     });
+    $(document).on('click', '#tambah_sprin', function () {
+      noSprin++;
+      var inputGroupSprin = $(
+        `
+        <div class="sprin-add mt-2">
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                <label for="bs-validation-name">Dokumen SPRIN</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select ND file. </div>
+              </div>
+            </div>
+            <div class="col-sm-12 col-md-6">
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="date" name="sprin_date" class="form-control" id="bs-validation-date" required="">
+                <label for="bs-validation-date">Berlaku Hingga</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select date. </div>
+              </div>
+            </div>
+          </div> 
+          <div class="col-2">
+            <button type="button" class="btn btn-danger remove_attach_sprin" title='Hapus'><i class="mdi mdi-delete me-1"></i></button>
+          </div>
+        </div>`
+      );
+
+      $('#sprinRow').append(inputGroupSprin);
+      $('#sprinBtn').hide();
+    });
 
     $(document).on('click', '.remove_attach', function (e) {
       if (e.type == 'click') {
@@ -185,17 +216,29 @@
         }
       }
     });
+    $(document).on('click', '.remove_attach_sprin', function (e) {
+      if (e.type == 'click') {
+        if (noSprin > 1) {
+          $(this).parents('.sprin-add').fadeOut();
+          $(this).parents('.sprin-add').remove();
+          noSprin--;
+        }
+      }
+      $('#sprinBtn').show();
+    });
   });
-  $('#doc_nd').on('click', function() {
-    var isChecked = $(this).prop('checked');
-    var table = 'nota_dinas';
+
+  function handleClick(checkbox) {
+    var isChecked = $(checkbox).prop('checked')
+    var table = $(checkbox).data('table');
+    var id = $(checkbox).data('id');
 
     $.ajax({
       data: {
         table: table,
-        id: $(this).data('id')
+        id: id
       },
-      url: "".concat(baseUrl, "dumas/arsip/"),
+      url: "".concat(baseUrl, "dumas/arsip/") + id,
       type: 'POST',
       success: function success(response) {
         var iconType;
@@ -203,6 +246,7 @@
           iconType = 'success';
         } else {
           iconType = 'error';
+          checkbox.checked = !isChecked;
         }
         // sweetalert
         Swal.fire({
@@ -215,7 +259,8 @@
         })
       },
       error: function error(err) {
-        $(this).prop('checked', isChecked);
+        // Revert checkbox state to its previous status if AJAX fails
+        checkbox.checked = !isChecked;
         Swal.fire({
           title: 'Error!',
           text: 'Internal server Error',
@@ -226,7 +271,8 @@
         })
       }
     });
-  });
+  };
+
 </script>
 
 <script>
@@ -562,7 +608,7 @@ function addParamToUrl(param, value) {
                 <div class=""><a href="{{$dumas->nd->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Nota Dinas">{{ $dumas->nd->number }}</a></div>
                 <div class="">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_nd" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd->id }}" {{ $dumas->nd->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="doc_nd" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="nd" data-id="{{ $dumas->nd->id }}" {{ $dumas->nd->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="doc_nd">Arsip</label>
                   </div>
                 </div>
@@ -596,23 +642,33 @@ function addParamToUrl(param, value) {
                 </div>
               </div>          
               @else
-              <div class="d-flex justify-content-between mb-4">
+              <div class="mb-4">
                 @if ($dumas->sprin)
                 @foreach ($dumas->sprin as $s)
-                <div class="mb-2">
-                  <div><a href="{{$s->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a></div>
-                  <div>Berlaku hingga {{ $s->valid_until }}</div>
-                  <div class="my-2">
-                    <button class="btn btn-primary w-full" role="button" id="add_sprin">Upload SPRIN</button>
+                <div class="d-flex justify-content-between">
+                  <div class="mb-2">
+                    <div><a href="{{$s->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a></div>
+                    <div>Berlaku hingga {{ $s->valid_until }}</div>
                   </div>
+                  <div class="d-grid">
+                    <div class="form-check form-switch mb-2">
+                      <input class="form-check-input" type="checkbox" id="doc_sprin" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="sprin" data-id="{{ $s->id }}" {{ $s->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
+                      <label class="form-check-label" for="doc_sprin">Arsip</label>
+                    </div>
+                  </div>                             
                 </div>
-                <div class="d-grid">
-                  <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_sprin" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $s->id }}" {{ $s->is_archived == 1 ? 'checked' : '' }}>
-                    <label class="form-check-label" for="doc_sprin">Arsip</label>
-                  </div>
-                </div>                             
                 @endforeach
+                @php
+                  $targetDate = \Carbon\Carbon::parse($s->valid_until);
+                  $today = \Carbon\Carbon::today();
+                @endphp
+                @if ($today->greaterThanOrEqualTo($targetDate))
+                <div id="sprinRow">
+                </div>
+                <div id="sprinBtn" class="mt-2">
+                  <button class="btn btn-primary" role="button" type="button" id="tambah_sprin">Perpanjangan SPRIN</button>
+                </div>
+                @endif
                 @else
                 <div>Upload Dokumen Nota Dinas terlebih dahulu!</div>
                 @endif
@@ -639,7 +695,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->bai_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_bai_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->bai_saksi->id }}" {{ $dumas->bai_saksi->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="doc_bai_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="bai_saksi" data-id="{{ $dumas->bai_saksi->id }}" {{ $dumas->bai_saksi->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="doc_bai_saksi">Arsip</label>
                   </div>
                 </div>  
@@ -663,7 +719,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->sp_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_sp_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->sp_saksi->id }}" {{ $dumas->sp_saksi->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="doc_sp_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="sp_saksi" data-id="{{ $dumas->sp_saksi->id }}" {{ $dumas->sp_saksi->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="doc_sp_saksi">Arsip</label>
                   </div>
                 </div> 
@@ -693,7 +749,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->bai_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_bai_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->bai_terlapor->id }}" {{ $dumas->bai_terlapor->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="doc_bai_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="bai_terlapor" data-id="{{ $dumas->bai_terlapor->id }}" {{ $dumas->bai_terlapor->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="doc_bai_terlapor">Arsip</label>
                   </div>
                 </div> 
@@ -717,7 +773,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->sp_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="doc_sp_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->sp_terlapor->id }}" {{ $dumas->sp_terlapor->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="doc_sp_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="sp_terlapor" data-id="{{ $dumas->sp_terlapor->id }}" {{ $dumas->sp_terlapor->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="doc_sp_terlapor">Arsip</label>
                   </div>
                 </div> 
@@ -747,7 +803,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->nd_lhp->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="nd_lhp" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd_lhp->id }}" {{ $dumas->nd_lhp->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="nd_lhp" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="lhp" data-id="{{ $dumas->nd_lhp->id }}" {{ $dumas->nd_lhp->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="nd_lhp">Arsip</label>
                   </div>
                 </div> 
@@ -777,7 +833,7 @@ function addParamToUrl(param, value) {
                 <div><a href="{{$dumas->nd_lhg->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
                 <div class="d-grid">
                   <div class="form-check form-switch mb-2">
-                    <input class="form-check-input" type="checkbox" id="nd_lhg" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd_lhg->id }}" {{ $dumas->nd_lhg->is_archived == 1 ? 'checked' : '' }}>
+                    <input class="form-check-input" type="checkbox" id="nd_lhg" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-table="lhg" data-id="{{ $dumas->nd_lhg->id }}" {{ $dumas->nd_lhg->is_archived == 1 ? 'checked' : '' }} onclick="handleClick(this)">
                     <label class="form-check-label" for="nd_lhg">Arsip</label>
                   </div>
                 </div> 

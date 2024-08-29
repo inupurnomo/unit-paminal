@@ -224,7 +224,7 @@ Route::middleware(['auth', 'auth.session', 'log.activity'])->group(function () {
     Route::post('document/{id}', [DocumentController::class, 'store'])->name('document.store');
     Route::delete('document/{id}', [DocumentController::class, 'store'])->name('document.destroy');
 
-    Route::post('arsip/{id}', [DumasController::class, 'arsip'])->name('document.arsip');
+    Route::post('arsip/{id}', [DocumentController::class, 'arsip'])->name('document.arsip');
   });
 
 

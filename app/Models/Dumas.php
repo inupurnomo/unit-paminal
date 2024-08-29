@@ -109,6 +109,9 @@ class Dumas extends Model
     public function sprin() {
       return $this->hasMany(Sprin::class);
     }
+    public function sprin_latest() {
+      return $this->hasOne(Sprin::class)->latest();
+    }
     public function bai_saksi() {
       return $this->hasOne(BAISaksi::class);
     }

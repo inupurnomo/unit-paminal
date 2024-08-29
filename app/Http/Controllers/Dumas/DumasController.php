@@ -424,25 +424,4 @@ class DumasController extends Controller
       return redirect()->back()->withErrors($validator)->withInput();
     }
   }
-
-  public function arsip(Request $request) {
-    $table = $request->table;
-    $id = $request->id;
-
-    $data = DB::table($table)->find($id);
-
-    if ($data) {
-      $arsip = DB::table($table)->where('id', $id)->update([
-        'is_archived' => !$data->is_archived,
-      ]);
-    } else {
-      return $this->response_json(500, 'Data tidak ditemukan!', null);
-    }
-
-    if ($arsip) {
-      return $this->response_json(200, 'Berhasil!', null);
-    } else {
-      return $this->response_json(500, 'Gagal!', null);
-    }
-  }
 }
