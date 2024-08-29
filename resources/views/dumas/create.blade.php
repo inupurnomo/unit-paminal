@@ -50,7 +50,7 @@
 
               <div class="col-10">
                 <div class="form-floating form-floating-outline mb-2">
-                  <input type="text" name="terlapor[]" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="" value="{{ old('terlapor') }}">
+                  <input type="text" name="terlapor[]" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="">
                   <label for="bs-validation-name">Nama Terlapor</label>
                   <div class="valid-feedback"> Looks good! </div>
                   <div class="invalid-feedback"> Please enter your name. </div>
@@ -150,7 +150,7 @@
           <hr />
           <div id="terlapor">
             <div class="form-floating form-floating-outline mb-2">
-              <input type="text" name="terlapor[]" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="" value="{{ old('terlapor') }}">
+              <input type="text" name="terlapor[]" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="">
               <label for="bs-validation-name">Nama Terlapor</label>
               <div class="valid-feedback"> Looks good! </div>
               <div class="invalid-feedback"> Please enter your name. </div>
