@@ -24,9 +24,39 @@
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Dumas History
 </h4>
 
+<form action="{{ route('dumas.history') }}" method="GET">
+  <div class="row my-4">
+    <div class="col-sm-12 col-md-6">
+      <div class="form-floating form-floating-outline">
+        <input type="text" name="q" id="q" class="form-control" placeholder="Pencarian..." value="{{ app('request')->input('q') }}" autocomplete="off">
+        <label for="q">Pencarian</label>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-2">
+      <div class="form-floating form-floating-outline">
+        <input type="date" name="start" id="date" class="form-control" placeholder="Tanggal"" value="{{ app('request')->input('start') }}">
+        <label for="date">Start</label>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-2">
+      <div class="form-floating form-floating-outline">
+        <input type="date" name="end" id="end" class="form-control" placeholder="Tanggal"" value="{{ app('request')->input('end') }}">
+        <label for="date-end">End</label>
+      </div>
+    </div>
+    <div class="col-sm-12 col-md-2 d-grid">
+      <button class="btn btn-primary waves-effect waves-light" type="submit">Filter</button>
+    </div>
+  </div>
+</form>
+<div class="divider">
+  <div class="divider-text">
+    <i class="mdi mdi-star-outline"></i>
+  </div>
+</div>
+
 <div class="row gy-4">
 @foreach ($dumas as $item)
-    
   <!-- Performance Overview Chart-->
   <div class="col-12 col-xl-4 col-md-6">
     <div class="card h-100">

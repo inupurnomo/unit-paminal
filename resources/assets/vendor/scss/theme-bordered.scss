@@ -3,7 +3,7 @@
 @import './_theme/libs';
 @import './_theme/pages';
 
-$primary-color: #C1AE8C;
+$primary-color: #ff8c6b;
 $body-bg: $white;
 
 body {
@@ -90,7 +90,7 @@ div.dataTables_wrapper .dt-button-collection > div[role='menu'] {
 }
 .layout-navbar-fixed .layout-page:not(.window-scrolled) .layout-navbar.navbar-detached,
 .layout-navbar-fixed .layout-page:not(.window-scrolled) .layout-navbar.navbar-detached .search-input {
-  background: #C1AE8C;
+  background: #ff8c6b;
 }
 
 // Menu

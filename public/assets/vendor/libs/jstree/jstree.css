@@ -2827,7 +2827,7 @@
   color: #fdb528;
 }
 .light-style .jstree .jstree-container-ul .jstree-icon.mdi-file-document-outline {
-  color: #C1AE8C;
+  color: #ff8c6b;
 }
 .light-style .jstree .jstree-container-ul .jstree-anchor {
   color: #636578;
@@ -2872,7 +2872,7 @@
 .light-style .jstree-context,
 .light-style .jstree-wholerow-clicked,
 .light-style .jstree-default-responsive .jstree-wholerow-clicked {
-  background-color: rgba(193, 174, 140, 0.08);
+  background-color: rgba(255, 140, 107, 0.08);
 }
 
 .dark-style .jstree .jstree-container-ul .jstree-icon.mdi-folder-outline,

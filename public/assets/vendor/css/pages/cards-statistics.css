@@ -50,7 +50,7 @@ html:not([dir=rtl]) .swiper-container.swiper-container-horizontal > .swiper-pagi
   background: rgba(76, 78, 100, 0.26) !important;
 }
 .light-style .swiper-container.swiper-sales.swiper-container-horizontal > .swiper-pagination-bullets .swiper-pagination-bullet.swiper-pagination-bullet-active {
-  background: #C1AE8C !important;
+  background: #ff8c6b !important;
 }
 
 .dark-style .swiper-container {

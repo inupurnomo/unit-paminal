@@ -132,13 +132,13 @@
         <div class="bukti-add row mt-2">
           <div class="row">
             <div class="form-floating form-floating-outline col-sm-12 col-md-4">
-              <select id="select2Basic" name="evidence_type[]" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
+              <select id="evi${noBukti}" name="evidence_type[]" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
                 <option value="">Pilih Type</option>
                 @foreach ($evidence_type as $item)
                     <option value="{{ $item->id }}">{{ $item->name }}</option>
                 @endforeach
               </select>
-              <label for="select2Basic">Pilih Type</label>
+              <label for="evi${noBukti}">Pilih Type</label>
             </div>
             <div class="col-sm-12 col-md-8">
               <div class="form-floating form-floating-outline mb-2">
@@ -150,8 +150,8 @@
             </div>
             <div class="col-sm-12 col-md-12">
               <div class="form-floating form-floating-outline mb-2">
-                <input type="file" name="evidence_file[]" class="form-control" id="bs-validation-name" required="">
-                <label for="bs-validation-name">Pilih File</label>
+                <input type="file" name="evidence_file[]" class="form-control" id="evi_name${noBukti}" required="">
+                <label for="evi_name${noBukti}">Pilih File</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please choose file. </div>
               </div>

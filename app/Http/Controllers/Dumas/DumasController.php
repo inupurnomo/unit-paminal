@@ -40,17 +40,31 @@ class DumasController extends Controller
 {
   public function index(Request $request)
   {
-    $pelapor = $request->q;
+    $query = $request->q;
     $startDate = $request->start;
     $endDate = $request->end;
     $data['dumas'] = Dumas::where('is_done', 0)
-      ->when($pelapor, function ($query, $pelapor) {
-        return $query->where('pelapor', 'LIKE', '%' . $pelapor . '%');
+      ->when($query, function ($queryBuilder, $query) {
+        return $queryBuilder->where(function ($subQuery) use ($query) {
+          $subQuery->where('pelapor', 'LIKE', '%' . $query . '%')
+            ->orWhere('satker', 'LIKE', '%' . $query . '%')
+            ->orWhere('perihal', 'LIKE', '%' . $query . '%')
+            ->orWhere('dugaan', 'LIKE', '%' . $query . '%')
+            ->orWhereHas('nd', function ($nd) use ($query) {
+              $nd->where('number', 'LIKE', '%' . $query . '%');
+            })
+            ->orWhereHas('terlapor', function ($tr) use ($query) {
+              $tr->where('name', 'LIKE', '%' . $query . '%');
+            })
+            ->orWhereHas('pj', function ($pj) use ($query) {
+              $pj->where('name', 'LIKE', '%' . $query . '%');
+            });
+        });
       })
       ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
         return $query->whereBetween('tanggal', [$startDate, $endDate]);
-      })->orderBy('tanggal', 'desc')->paginate(15);
-    // return $data;
+      })->orderBy('tanggal', 'desc')->paginate(1);
+
     return view('dumas.index', $data);
   }
 
@@ -67,7 +81,7 @@ class DumasController extends Controller
   public function store(Request $request)
   {
     // dd($request->all());
-    $validator = $request->validate([
+    $validator = Validator::make($request->all(), [
       'nd' => 'required|string',
       'nd_file' => 'required|mimes:pdf',
       'satker' => 'required',
@@ -77,11 +91,10 @@ class DumasController extends Controller
       'pj_id' => 'required',
     ]);
 
-    // // dd($validator->messages()->all());
-    // if ($validator->fails()) {
-    //   notify()->info($validator->messages());
-    //   return redirect()->back()->withErrors($validator)->withInput();
-    // }
+    if ($validator->fails()) {
+      notify()->info($validator->messages());
+      return redirect()->back()->withErrors($validator)->withInput();
+    }
 
     DB::beginTransaction();
 
@@ -128,7 +141,6 @@ class DumasController extends Controller
       throw $th;
       DB::rollBack();
       notify()->error($th->getMessage());
-      dd($th->getMessage());
       return redirect()->back()->withErrors($validator)->withInput();
     }
   }
@@ -204,8 +216,31 @@ class DumasController extends Controller
 
   public function history(Request $request)
   {
-    $data['dumas'] = Dumas::where('is_done', 1)->orderBy('tanggal', 'desc')->paginate(15);
-    // return $data;
+    $query = $request->q;
+    $startDate = $request->start;
+    $endDate = $request->end;
+    $data['dumas'] = Dumas::where('is_done', 1)
+      ->when($query, function ($queryBuilder, $query) {
+        return $queryBuilder->where(function ($subQuery) use ($query) {
+          $subQuery->where('pelapor', 'LIKE', '%' . $query . '%')
+            ->orWhere('satker', 'LIKE', '%' . $query . '%')
+            ->orWhere('perihal', 'LIKE', '%' . $query . '%')
+            ->orWhere('dugaan', 'LIKE', '%' . $query . '%')
+            ->orWhereHas('nd', function ($nd) use ($query) {
+              $nd->where('number', 'LIKE', '%' . $query . '%');
+            })
+            ->orWhereHas('terlapor', function ($tr) use ($query) {
+              $tr->where('name', 'LIKE', '%' . $query . '%');
+            })
+            ->orWhereHas('pj', function ($pj) use ($query) {
+              $pj->where('name', 'LIKE', '%' . $query . '%');
+            });
+        });
+      })
+      ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
+        return $query->whereBetween('tanggal', [$startDate, $endDate]);
+      })->orderBy('tanggal', 'desc')->paginate(15);
+
     return view('dumas.history', $data);
   }
 

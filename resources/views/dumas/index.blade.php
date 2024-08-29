@@ -26,7 +26,7 @@
   <div class="row my-4">
     <div class="col-sm-12 col-md-6">
       <div class="form-floating form-floating-outline">
-        <input type="text" name="q" id="q" class="form-control" placeholder="Pencarian..." value="{{ app('request')->input('q') }}">
+        <input type="text" name="q" id="q" class="form-control" placeholder="Pencarian..." value="{{ app('request')->input('q') }}" autocomplete="off">
         <label for="q">Pencarian</label>
       </div>
     </div>

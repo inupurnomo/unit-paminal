@@ -35,19 +35,12 @@
       ]
     },
     {
+      "url": "/user",
       "name": "User",
       "icon": "menu-icon tf-icons mdi mdi-account-outline",
       "admin": true,
       "slug": [
         "user"
-      ],
-      "submenu": [
-        {
-          "url": "/user",
-          "name": "Users",
-          "icon": "menu-icon tf-icons mdi mdi-circle-medium mdi-20px",
-          "slug": "user"
-        }
       ]
     },
     {
@@ -59,13 +52,13 @@
         {
           "url": "/auth-logs",
           "name": "Auth Logs",
-          "icon": "menu-icon tf-icons mdi mdi-circle-medium mdi-20px",
+          "icon": "menu-icon tf-icons mdi mdi-security-network mdi-20px",
           "slug": "auth.logs"
         },
         {
           "url": "/log-activity",
           "name": "Activity Logs",
-          "icon": "menu-icon tf-icons mdi mdi-circle-medium mdi-20px",
+          "icon": "menu-icon tf-icons mdi mdi-server-security mdi-20px",
           "slug": "log.activity"
         }
       ]

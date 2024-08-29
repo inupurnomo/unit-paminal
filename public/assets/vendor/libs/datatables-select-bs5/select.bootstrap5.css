@@ -73,7 +73,7 @@ table.dataTable.table-sm tbody td.select-checkbox::before {
 
 .light-style table.dataTable tbody > tr.selected,
 .light-style table.dataTable tbody > tr > .selected {
-  background-color: rgba(193, 174, 140, 0.08);
+  background-color: rgba(255, 140, 107, 0.08);
 }
 .light-style table.dataTable tbody > tr.selected > *,
 .light-style table.dataTable tbody > tr > .selected > * {

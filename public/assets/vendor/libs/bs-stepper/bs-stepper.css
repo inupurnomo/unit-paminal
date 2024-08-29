@@ -570,7 +570,7 @@ html:not([dir=rtl]).dark-style .bs-stepper.vertical .bs-stepper-header {
   color: #6d788d;
 }
 .light-style .wizard-vertical-icons.vertical .bs-stepper-header .step.active .avatar-initial {
-  background-color: #C1AE8C;
+  background-color: #ff8c6b;
   color: #fff;
 }
 

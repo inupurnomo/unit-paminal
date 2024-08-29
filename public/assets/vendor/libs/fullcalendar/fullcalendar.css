@@ -230,13 +230,13 @@ html[dir=rtl] .fc .fc-toolbar .fc-button-group .fc-button:last-child {
 }
 .light-style .fc-event-primary:not(.fc-list-event) {
   background-color: #f6f3ee !important;
-  color: #C1AE8C !important;
+  color: #ff8c6b !important;
 }
 .light-style .fc-event-primary:not(.fc-list-event) {
-  border-color: rgba(193, 174, 140, 0.15);
+  border-color: rgba(255, 140, 107, 0.15);
 }
 .light-style .fc-event-primary.fc-list-event .fc-list-event-dot {
-  border-color: #C1AE8C !important;
+  border-color: #ff8c6b !important;
 }
 .light-style .fc-event-secondary:not(.fc-list-event) {
   background-color: #e9ebee !important;
