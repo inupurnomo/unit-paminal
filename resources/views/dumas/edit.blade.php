@@ -48,7 +48,7 @@
     <div class="card">
       <h5 class="card-header">Edit Dumas - <strong>{{ $dumas->pelapor }}</strong></h5>
       <div class="card-body">
-        <form class="needs-validation" action="{{route('dumas.update', $dumas->id )}}" method="PUT" novalidate="">
+        <form class="needs-validation" action="{{route('dumas.update', $dumas->id )}}" method="POST" novalidate="">
           @csrf
           @method('PUT')
           <div class="form-floating form-floating-outline mb-4">

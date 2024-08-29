@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Den;
+use App\Models\Dumas;
 use App\Models\Pangkat;
 use App\Models\Unit;
 use App\Models\User;
@@ -17,6 +18,8 @@ class ProfileController extends Controller
   public function index()
   {
     $data['user'] = User::findOrFail(Auth::user()->id);
+    $data['dumas'] = Dumas::where(['pj_id' => Auth::user()->id, 'is_done' => 0])->count();
+    $data['dumas_done'] = Dumas::where(['pj_id' => Auth::user()->id, 'is_done' => 1])->count();
 
     return view('profile.index', $data);
   }

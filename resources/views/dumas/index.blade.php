@@ -132,8 +132,8 @@
 @endif
 </div>
 
-<div class="position-absolute bottom-0 end-0 my-4 mx-4">
-  <a href="{{ route('dumas.create') }}"  title="Buat Dumas" type="button" class="btn btn-icon btn-primary btn-fab demo waves-effect waves-light">
+<div class="fab">
+  <a href="{{ route('dumas.create') }}"  title="Buat Dumas" type="button" class="btn btn-icon btn-primary btn-fab waves-effect waves-light">
     <span class="tf-icons mdi mdi-plus mdi-24px"></span>
   </a>
 </div>

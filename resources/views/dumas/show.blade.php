@@ -568,25 +568,24 @@ function addParamToUrl(param, value) {
                       <li class="timeline-item timeline-item-transparent">
                         <span class="timeline-point timeline-point-primary"></span>
                         <div class="timeline-event">
-                          <div class="timeline-header border-bottom mb-3">
+                          <div class="timeline-header border-bottom">
                             {{-- <h6 class="mb-0">Get on the flight</h6> --}}
                             <span class="text-muted">
                               {{ \Carbon\Carbon::parse($p->updated_at)->translatedFormat('l, d F Y') }}
                             </span>
-                          </div>
-                          <div class="d-flex justify-content-between flex-wrap mb-2">
-                            <div>
-                              <span>{{ $p->value }}</span>
-                            </div>
-                            <div>
+                            <div class="my-1">
                               <span class="text-muted">
-                                <a type="button" class="btn btn-danger" title='Hapus' href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('delete-form{{$p->id}}').submit();"><i class="mdi mdi-delete me-1"></i></a>
+                                <a type="button" class="btn btn-xs btn-danger" title='Hapus' href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('delete-form{{$p->id}}').submit();">-</a>
                                 <form method="POST" id='delete-form{{$p->id}}' action="{{ route('progress.destroy', $p->id) }}">
                                   @csrf
                                   @method('DELETE')
-            
                                 </form>
                               </span>
+                            </div>
+                          </div>
+                          <div class="d-flex justify-content-between flex-wrap">
+                            <div>
+                              <span>{{ $p->value }}</span>
                             </div>
                           </div>
                         </div>

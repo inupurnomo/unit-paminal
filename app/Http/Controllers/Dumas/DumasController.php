@@ -164,7 +164,7 @@ class DumasController extends Controller
         'tanggal' => $request->tanggal,
         'pelapor' => $request->pelapor,
         'terlapor' => $request->terlapor,
-        'pj_id' => $request->pj,
+        'pj_id' => $request->pj_id,
         'update_user' => Auth::user()->id,
       ]);
 

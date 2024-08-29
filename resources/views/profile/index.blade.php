@@ -86,9 +86,8 @@
       <div class="card-body">
         <small class="card-text text-uppercase">Overview</small>
         <ul class="list-unstyled mb-0 mt-3 pt-1">
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-check mdi-24px"></i><span class="fw-medium mx-2">Task Compiled:</span> <span>13.5k</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-account-outline mdi-24px"></i><span class="fw-medium mx-2">Projects Compiled:</span> <span>146</span></li>
-          <li class="d-flex align-items-center"><i class="mdi mdi-view-grid-outline mdi-24px"></i><span class="fw-medium mx-2">Connections:</span> <span>897</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-check mdi-24px"></i><span class="fw-medium mx-2">Dumas Berlangsung:</span> <span>{{ $dumas }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-account-outline mdi-24px"></i><span class="fw-medium mx-2">Dumas Selesai:</span> <span>{{ $dumas_done }}</span></li>
         </ul>
       </div>
     </div>
@@ -99,7 +98,7 @@
     <div class="card card-action mb-4">
       <div class="card-header align-items-center">
         <h5 class="card-action-title mb-0"><i class='mdi mdi-format-list-bulleted mdi-24px me-2'></i>Activity Timeline</h5>
-        <div class="card-action-element">
+        {{-- <div class="card-action-element">
           <div class="dropdown">
             <button type="button" class="btn dropdown-toggle hide-arrow p-0" data-bs-toggle="dropdown" aria-expanded="false"><i class="mdi mdi-dots-vertical mdi-24px text-muted"></i></button>
             <ul class="dropdown-menu dropdown-menu-end">
@@ -111,11 +110,11 @@
               <li><a class="dropdown-item" href="javascript:void(0);">Report bug</a></li>
             </ul>
           </div>
-        </div>
+        </div> --}}
       </div>
       <div class="card-body pt-3 pb-0">
         <ul class="timeline mb-0">
-          <li class="timeline-item timeline-item-transparent">
+          {{-- <li class="timeline-item timeline-item-transparent">
             <span class="timeline-point timeline-point-danger"></span>
             <div class="timeline-event">
               <div class="timeline-header mb-1">
@@ -163,8 +162,18 @@
                 </a>
               </div>
             </div>
+          </li> --}}
+          <li class="timeline-item timeline-item-transparent">
+            <span class="timeline-point timeline-point-info"></span>
+            <div class="timeline-event">
+              <div class="timeline-header mb-1">
+                <h6 class="mb-0">Project status updated</h6>
+                <small class="text-muted">10 Day Ago</small>
+              </div>
+              <p class="mb-0">Woocommerce iOS App Completed</p>
+            </div>
           </li>
-          <li class="timeline-item timeline-item-transparent border-transparent">
+          <li class="timeline-item timeline-item-transparent">
             <span class="timeline-point timeline-point-info"></span>
             <div class="timeline-event">
               <div class="timeline-header mb-1">

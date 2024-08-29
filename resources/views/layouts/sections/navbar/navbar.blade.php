@@ -103,7 +103,7 @@ $navbarDetached = ($navbarDetached ?? '');
                       John Doe
                       @endif
                     </span>
-                    <small class="text-muted">Admin</small>
+                    <small class="text-muted">{{ auth()->user()->jabatan ?? auth()->user()->role_name() }}</small>
                   </div>
                 </div>
               </a>
@@ -112,7 +112,7 @@ $navbarDetached = ($navbarDetached ?? '');
               <div class="dropdown-divider"></div>
             </li>
             <li>
-              <a class="dropdown-item" href="{{ Route::has('profile.show') ? route('profile.show') : url('pages/profile-user') }}">
+              <a class="dropdown-item" href="{{ Route::has('profile') ? route('profile') : url('pages/profile-user') }}">
                 <i class="mdi mdi-account-outline me-2"></i>
                 <span class="align-middle">My Profile</span>
               </a>
