@@ -71,9 +71,9 @@
               </td>
             </tr>
             <tr>
-              <td>Perihal</td>
+              <td>Dugaan</td>
               <td>:</td>
-              <td>{{ $item->perihal }}</td>
+              <td>{{ $item->dugaan }}</td>
             </tr>
             <hr />
             <tr>
