@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('tanggal');
             $table->string('pelapor');
-            $table->string('perihal');
+            $table->text('perihal');
+            $table->text('dugaan');
+            $table->text('wujud_perbuatan');
             $table->string('satker');
             $table->unsignedBigInteger('pj_id');
             $table->unsignedBigInteger('den_id');

@@ -116,6 +116,16 @@
             <input type="text" name="tanggal" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" value="{{ old('tanggal') }}">
             <label for="flatpickr-date">Tanggal Diterima</label>
           </div>
+
+          <hr >
+          <div class="form-floating form-floating-outline mb-4">
+            <input type="text" name="pelapor" class="form-control" id="bs-validation-name" placeholder="Nama Pelapor" required="" value="{{ old('pelapor') }}">
+            <label for="bs-validation-name">Nama Pelapor</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please enter your name. </div>
+          </div>
+
+          <hr />
           <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="perihal" class="form-control" id="bs-validation-name" placeholder="Perihal" required="" value="{{ old('perihal') }}">
             <label for="bs-validation-name">Perihal</label>
@@ -124,18 +134,20 @@
           </div>
 
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="pelapor" class="form-control" id="bs-validation-name" placeholder="Nama Pelapor" required="" value="{{ old('pelapor') }}">
-            <label for="bs-validation-name">Nama Pelapor</label>
+            <input type="text" name="dugaan" class="form-control" id="bs-validation-name" placeholder="Dugaan" required="" value="{{ old('dugaan') }}">
+            <label for="bs-validation-name">Dugaan</label>
             <div class="valid-feedback"> Looks good! </div>
-            <div class="invalid-feedback"> Please enter your name. </div>
+            <div class="invalid-feedback"> Please enter dugaan. </div>
           </div>
-          <hr />
+
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="satker" class="form-control" id="bs-validation-name" placeholder="Satker" required="" value="{{ old('asal') }}">
-            <label for="bs-validation-name">Satker</label>
+            <input type="text" name="wujud_perbuatan" class="form-control" id="bs-validation-name" placeholder="Wujud Perbuatan" required="" value="{{ old('wujud_perbuatan') }}">
+            <label for="bs-validation-name">Wujud Perbuatan</label>
             <div class="valid-feedback"> Looks good! </div>
-            <div class="invalid-feedback"> Please enter the origin of dumas. </div>
+            <div class="invalid-feedback"> Please enter wujud perbuatan. </div>
           </div>
+
+          <hr />
           <div id="terlapor">
             <div class="form-floating form-floating-outline mb-2">
               <input type="text" name="terlapor[]" class="form-control" id="bs-validation-name" placeholder="Nama Terlapor" required="" value="{{ old('terlapor') }}">
@@ -148,6 +160,13 @@
             <div class="col-12">
               <button type="button" class="btn btn-sm btn-primary" data-repeater-create id="tambah_terlapor"><i class="mdi mdi-plus me-1"></i> Tambah Terlapor</button>
             </div>
+          </div>
+
+          <div class="form-floating form-floating-outline mb-4">
+            <input type="text" name="satker" class="form-control" id="bs-validation-name" placeholder="Satker" required="" value="{{ old('asal') }}">
+            <label for="bs-validation-name">Satker</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please enter the origin of dumas. </div>
           </div>
 
           @if (auth()->user()->username == 'administrator')

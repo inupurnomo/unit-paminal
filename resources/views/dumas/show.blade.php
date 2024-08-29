@@ -355,9 +355,24 @@ function addParamToUrl(param, value) {
                                     </td>
                                   </tr>
                                   <tr>
+                                    <td>Satker</td>
+                                    <td>:</td>
+                                    <td>{{ $dumas->satker }}</td>
+                                  </tr>
+                                  <tr>
                                     <td>Perihal</td>
                                     <td>:</td>
                                     <td>{{ $dumas->perihal }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Dugaan</td>
+                                    <td>:</td>
+                                    <td>{{ $dumas->dugaan }}</td>
+                                  </tr>
+                                  <tr>
+                                    <td>Wujud Perbuatan</td>
+                                    <td>:</td>
+                                    <td>{{ $dumas->wujud_perbuatan }}</td>
                                   </tr>
                                 </tbody>
                               </table>

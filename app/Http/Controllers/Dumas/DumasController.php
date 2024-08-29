@@ -91,6 +91,8 @@ class DumasController extends Controller
         'pelapor' => $request->pelapor,
         'satker' => $request->satker,
         'perihal' => $request->perihal,
+        'dugaan' => $request->dugaan,
+        'wujud_perbuatan' => $request->wujud_perbuatan,
         'pj_id' => $request->pj_id,
         'den_id' => $request->den_id ?? auth()->user()->den_id,
         'unit_id' => $request->unit_id ?? auth()->user()->unit_id,

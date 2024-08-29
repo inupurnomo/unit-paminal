@@ -13,6 +13,8 @@ class Dumas extends Model
       'tanggal',
       'pelapor',
       'perihal',
+      'dugaan',
+      'wujud_perbuatan',
       'satker',
       'pj_id',
       'den_id',
