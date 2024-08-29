@@ -163,7 +163,7 @@
           </div>
 
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="satker" class="form-control" id="bs-validation-name" placeholder="Satker" required="" value="{{ old('asal') }}">
+            <input type="text" name="satker" class="form-control" id="bs-validation-name" placeholder="Satker" required="" value="{{ old('satker') }}">
             <label for="bs-validation-name">Satker</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter the origin of dumas. </div>

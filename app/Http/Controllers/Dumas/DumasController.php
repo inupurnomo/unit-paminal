@@ -69,7 +69,7 @@ class DumasController extends Controller
     // dd($request->all());
     $validator = $request->validate([
       'nd' => 'required|string',
-      'nd_file' => 'required|mimes:pdf|max:2048',
+      'nd_file' => 'required|mimes:pdf',
       'satker' => 'required',
       'tanggal' => 'required',
       'pelapor' => 'required|string',
