@@ -21,6 +21,8 @@ return new class extends Migration
             $table->unsignedBigInteger('den_id');
             $table->unsignedBigInteger('unit_id');
             $table->boolean('is_done')->default(false);
+            $table->unsignedBigInteger('insert_user');
+            $table->unsignedBigInteger('update_user');
             $table->timestamps();
         });
     }

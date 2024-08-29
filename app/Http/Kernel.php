@@ -70,6 +70,7 @@ class Kernel extends HttpKernel
   protected $routeMiddleware = [
     // Middleware lain
     'check.access' => \App\Http\Middleware\CheckAccess::class,
+    'log.activity' => \App\Http\Middleware\LogActivity::class,
 ];
 
 }

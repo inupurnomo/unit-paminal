@@ -25,7 +25,7 @@
 @endsection
 
 @section('page-script')
-<script src="{{asset('js/laravel-user-management.js')}}"></script>
+<script src="{{asset('assets/js/user.js')}}"></script>
 <script src="{{asset('assets/js/forms-selects.js')}}"></script>
 
 @endsection

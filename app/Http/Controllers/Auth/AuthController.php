@@ -11,13 +11,14 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Session as FacadesSession;
+use Yajra\DataTables\Facades\DataTables;
 
 class AuthController extends Controller
 {
   public function index()
   {
     $pageConfigs = ['myLayout' => 'blank'];
-    return view('auth.index', ['pageConfigs' => $pageConfigs]);
+    return view('auth.login', ['pageConfigs' => $pageConfigs]);
   }
 
   public function login(Request $request)

@@ -25,7 +25,7 @@ class DocumentController extends Controller
           $file_sprin = $this->storeFile($request->sprin_file, 'file/sprin');
           Sprin::updateOrCreate(
             ['dumas_id' => $id],
-            ['file' => $file_sprin]
+            ['valid_until' => $request->sprin_date, 'file' => $file_sprin]
           );
         }
 

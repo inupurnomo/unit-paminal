@@ -30,6 +30,7 @@ use App\Models\User;
 use App\Models\Witness;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Storage;
@@ -93,6 +94,8 @@ class DumasController extends Controller
         'pj_id' => $request->pj_id,
         'den_id' => $request->den_id ?? auth()->user()->den_id,
         'unit_id' => $request->unit_id ?? auth()->user()->unit_id,
+        'insert_user' => Auth::user()->id,
+        'update_user' => Auth::user()->id,
       ]);
 
       $file_nd = $this->storeFile($request->nd_file, 'file/nd');
@@ -117,14 +120,14 @@ class DumasController extends Controller
         return Redirect::to('/dumas');
       } else {
         notify()->error('Error');
-        // return redirect()->back()->withErrors($validator)->withInput();
+        return redirect()->back()->withErrors($validator)->withInput();
       }
     } catch (\Throwable $th) {
       throw $th;
       DB::rollBack();
       notify()->error($th->getMessage());
       dd($th->getMessage());
-      // return redirect()->back()->withErrors($validator)->withInput();
+      return redirect()->back()->withErrors($validator)->withInput();
     }
   }
 
@@ -160,6 +163,7 @@ class DumasController extends Controller
         'pelapor' => $request->pelapor,
         'terlapor' => $request->terlapor,
         'pj_id' => $request->pj,
+        'update_user' => Auth::user()->id,
       ]);
 
       if ($request->nd != $dumas->nd->number) {
@@ -172,7 +176,7 @@ class DumasController extends Controller
 
       DB::commit();
       if ($update) {
-        notify()->success('Dumas berhasil ditambahkan!');
+        notify()->success('Dumas berhasil diupdate!');
         return Redirect::to('/dumas');
       } else {
         notify()->error('Error');
@@ -418,6 +422,27 @@ class DumasController extends Controller
 
       notify()->error($th->getMessage());
       return redirect()->back()->withErrors($validator)->withInput();
+    }
+  }
+
+  public function arsip(Request $request) {
+    $table = $request->table;
+    $id = $request->id;
+
+    $data = DB::table($table)->find($id);
+
+    if ($data) {
+      $arsip = DB::table($table)->where('id', $id)->update([
+        'is_archived' => !$data->is_archived,
+      ]);
+    } else {
+      return $this->response_json(500, 'Data tidak ditemukan!', null);
+    }
+
+    if ($arsip) {
+      return $this->response_json(200, 'Berhasil!', null);
+    } else {
+      return $this->response_json(500, 'Gagal!', null);
     }
   }
 }

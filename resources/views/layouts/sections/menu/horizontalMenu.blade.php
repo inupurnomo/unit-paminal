@@ -6,18 +6,10 @@ $configData = Helper::appClasses();
   <div class="{{$containerNav}} d-flex h-100">
     <ul class="menu-inner">
       @foreach ($menuData[1]->menu as $menu)
-
       {{-- active menu method --}}
       @php
-        $adminMenu = '';
         $activeClass = null;
         $currentRouteName =  Route::currentRouteName();
-
-        if (auth()->check() && (auth()->user()->role_name() != 'administrator' && isset($menu->admin))) {
-          $adminMenu = 'd-none';
-        } else{
-          $adminMenu = 'd-block';
-        }
 
         if ($currentRouteName === $menu->slug) {
             $activeClass = 'active';
@@ -39,8 +31,9 @@ $configData = Helper::appClasses();
         }
       @endphp
 
+      @if (auth()->check() && (auth()->user()->role_name() == 'administrator')) 
       {{-- main menu --}}
-      <li class="menu-item {{$activeClass}} {{$adminMenu}}">
+      <li class="menu-item {{$activeClass}}">
         <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
           @isset($menu->icon)
           <i class="{{ $menu->icon }}"></i>
@@ -53,6 +46,24 @@ $configData = Helper::appClasses();
           @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
         @endisset
       </li>
+      @else
+      @empty($menu->admin)
+      {{-- main menu --}}
+      <li class="menu-item {{$activeClass}}">
+        <a href="{{ isset($menu->url) ? url($menu->url) : 'javascript:void(0);' }}" class="{{ isset($menu->submenu) ? 'menu-link menu-toggle' : 'menu-link' }}" @if (isset($menu->target) and !empty($menu->target)) target="_blank" @endif>
+          @isset($menu->icon)
+          <i class="{{ $menu->icon }}"></i>
+          @endisset
+          <div>{{ isset($menu->name) ? __($menu->name) : '' }}</div>
+        </a>
+
+        {{-- submenu --}}
+        @isset($menu->submenu)
+          @include('layouts.sections.menu.submenu',['menu' => $menu->submenu])
+        @endisset
+      </li>
+      @endempty
+      @endif
       @endforeach
     </ul>
   </div>

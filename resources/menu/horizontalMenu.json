@@ -49,6 +49,26 @@
           "slug": "user"
         }
       ]
+    },
+    {
+      "name": "Logs",
+      "icon": "menu-icon tf-icons mdi mdi-account-question-outline",
+      "admin": true,
+      "slug": ["auth.logs", "log.activity"],
+      "submenu": [
+        {
+          "url": "/auth-logs",
+          "name": "Auth Logs",
+          "icon": "menu-icon tf-icons mdi mdi-circle-medium mdi-20px",
+          "slug": "auth.logs"
+        },
+        {
+          "url": "/log-activity",
+          "name": "Activity Logs",
+          "icon": "menu-icon tf-icons mdi mdi-circle-medium mdi-20px",
+          "slug": "log.activity"
+        }
+      ]
     }
   ]
 }

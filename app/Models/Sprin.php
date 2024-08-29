@@ -12,6 +12,7 @@ class Sprin extends Model
     protected $fillable = [
       'dumas_id',
       'file',
+      'valid_until',
       'is_archived',
     ];
 }

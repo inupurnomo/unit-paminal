@@ -18,6 +18,8 @@ class Dumas extends Model
       'den_id',
       'unit_id',
       'is_done',
+      'insert_user',
+      'update_user',
     ];
 
     public function pj() {
@@ -105,7 +107,7 @@ class Dumas extends Model
 
     // documents
     public function sprin() {
-      return $this->hasOne(Sprin::class);
+      return $this->hasMany(Sprin::class);
     }
     public function bai_saksi() {
       return $this->hasOne(BAISaksi::class);

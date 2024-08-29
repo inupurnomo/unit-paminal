@@ -9,6 +9,8 @@ use App\Models\Unit;
 use Illuminate\Http\Request;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Spatie\Permission\Models\Role;
 
@@ -20,7 +22,7 @@ class UserController extends Controller
    */
   public function UserManagement()
   {
-    
+
     $users = User::where('username', '<>', 'administrator')->get();
     $userCount = $users->count();
     $verified = User::whereNotNull('email_verified_at')->get()->count();
@@ -155,7 +157,7 @@ class UserController extends Controller
       // update the value
       $users = User::updateOrCreate(
         ['id' => $userID],
-        ['username' => $request->username,'name' => $request->name, 'pangkat_id' => $request->pangkat_id, 'jabatan' => $request->jabatan, 'den_id' => $request->den_id, 'unit_id' => $request->unit_id],
+        ['username' => $request->username, 'name' => $request->name, 'pangkat_id' => $request->pangkat_id, 'jabatan' => $request->jabatan, 'den_id' => $request->den_id, 'unit_id' => $request->unit_id],
       );
 
       if ($users->role_name() != $request->role) {
@@ -221,9 +223,7 @@ class UserController extends Controller
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
-  {
-  }
+  public function update(Request $request, $id) {}
 
   /**
    * Remove the specified resource from storage.
@@ -234,11 +234,5 @@ class UserController extends Controller
   public function destroy($id)
   {
     $users = User::where('id', $id)->delete();
-  }
-
-  public function profile() {
-    $data['user'] = User::findOrFail(Auth::user()->id);
-
-    return view('profile.index', $data);
   }
 }

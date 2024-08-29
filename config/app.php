@@ -190,6 +190,7 @@ return [
     // 'Example' => App\Facades\Example::class,
     'Helper' => App\Helpers\Helpers::class,
     'DataTables' => Yajra\DataTables\Facades\DataTables::class,
+    'LogActivity' => App\Helpers\LogActivity::class,
   ])->toArray(),
 
 ];

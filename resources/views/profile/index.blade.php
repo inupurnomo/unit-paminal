@@ -48,9 +48,14 @@
                 </li>
               </ul>
             </div>
-            {{-- <a href="javascript:void(0)" class="btn btn-primary">
-              <i class='mdi mdi-account-check-outline me-1'></i>Connected
-            </a> --}}
+            <div class="d-flex gap-2">
+              <a href="{{ route('profile.edit') }}" class="btn btn-primary">
+                <i class='mdi mdi-account-check-outline me-1'></i>Edit
+              </a>
+              <a href="{{ route('profile.security') }}" class="btn btn-danger">
+                <i class='mdi mdi-account-check-outline me-1'></i>Ubah Password
+              </a>
+            </div>
           </div>
         </div>
       </div>
@@ -68,11 +73,10 @@
         <small class="card-text text-uppercase">About</small>
         <ul class="list-unstyled my-3 py-1">
           <li class="d-flex align-items-center mb-3"><i class="mdi mdi-account-outline mdi-24px"></i><span class="fw-medium mx-2">Username:</span> <span>{{ $user->username}}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-star-outline mdi-24px"></i><span class="fw-medium mx-2">Pangkat:</span> <span>{{ $user->pangkat->nama_pangkat }}</span></li>
           <li class="d-flex align-items-center mb-3"><i class="mdi mdi-account-outline mdi-24px"></i><span class="fw-medium mx-2">Full Name:</span> <span>{{ $user->name}}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-check mdi-24px"></i><span class="fw-medium mx-2">Status:</span> <span>Active</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-star-outline mdi-24px"></i><span class="fw-medium mx-2">Role:</span> <span>{{ $user->role_name() }}</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-flag-outline mdi-24px"></i><span class="fw-medium mx-2">Country:</span> <span>USA</span></li>
-          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-translate mdi-24px"></i><span class="fw-medium mx-2">Languages:</span> <span>English</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-check mdi-24px"></i><span class="fw-medium mx-2">Jabatan:</span> <span>{{ $user->jabatan }}</span></li>
+          <li class="d-flex align-items-center mb-3"><i class="mdi mdi-flag-outline mdi-24px"></i><span class="fw-medium mx-2">Role:</span> <span>{{ $user->role_name() }}</span></li>
         </ul>
       </div>
     </div>

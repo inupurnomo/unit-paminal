@@ -23,7 +23,6 @@ class UserSeeder extends Seeder
         [
           'username' => 'administrator',
           'name' => 'Administrator',
-          'password' => bcrypt(12345),
           'role' => 'administrator',
         ],
         [
@@ -33,7 +32,6 @@ class UserSeeder extends Seeder
           'jabatan' => 'KANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'kanit',
         ],
         [
@@ -43,7 +41,6 @@ class UserSeeder extends Seeder
           'jabatan' => 'PANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'panit',
         ],
         [
@@ -53,7 +50,6 @@ class UserSeeder extends Seeder
           'jabatan' => 'PANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'panit',
         ],
         [
@@ -63,7 +59,6 @@ class UserSeeder extends Seeder
           'jabatan' => 'BANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'banit',
         ],
         [
@@ -73,17 +68,15 @@ class UserSeeder extends Seeder
           'jabatan' => 'BANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'banit',
         ],
         [
-          'username' => 'banit2_1',
+          'username' => 'banit2_3',
           'name' => 'MUHAMMAD FADEL ALFARISI',
           'pangkat_id' => 15,
           'jabatan' => 'BANIT II',
           'unit_id' => 2,
           'den_id' => 1,
-          'password' => bcrypt(12345),
           'role' => 'banit',
         ],
       ];

@@ -166,8 +166,10 @@ use App\Http\Controllers\KepailitanController;
 use App\Http\Controllers\KompetensiController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\LogController;
 use App\Http\Controllers\maps\Leaflet;
 use App\Http\Controllers\PengaturanPerusahaanController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RapatController;
 use App\Http\Controllers\RapatRembuismentController;
 use App\Http\Controllers\RembuismentController;
@@ -178,7 +180,13 @@ use App\Http\Controllers\User\UserController;
 Route::get('login', [AuthController::class, 'index'])->name('login');
 Route::post('login-process', [AuthController::class, 'login'])->name('login.action');
 
-Route::middleware(['auth', 'auth.session'])->group(function () {
+Route::middleware(['auth', 'auth.session', 'log.activity'])->group(function () {
+  // logs
+  Route::get('auth-logs', [LogController::class, 'logs'])->middleware('check.access:administrator')->name('auth.logs');
+  Route::post('auth-logs/list', [LogController::class, 'authList'])->middleware('check.access:administrator')->name('auth.list');
+  Route::get('log-activity', [LogController::class, 'LogActivity'])->middleware('check.access:administrator')->name('log.activity');
+  Route::post('log-activity/list', [LogController::class, 'activityList'])->middleware('check.access:administrator')->name('log.activityList');
+
   Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
   Route::prefix('data')->group(function () {
@@ -189,8 +197,13 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
   // User
   Route::get('/user', [UserController::class, 'UserManagement'])->middleware('check.access:administrator')->name('user');
   Route::resource('/user-list', UserController::class)->middleware('check.access:administrator');
-  
-  Route::get('profile', [UserController::class, 'profile'])->name('profile.show');
+  Route::prefix('profile')->group(function () {
+    Route::get('/', [ProfileController::class, 'index'])->name('profile');
+    Route::get('edit', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::post('update', [ProfileController::class, 'update'])->name('profile.update');
+    Route::get('security', [ProfileController::class, 'security'])->name('profile.security');
+    Route::post('security', [ProfileController::class, 'changePassword'])->name('profile.changePassword');
+  });
 
   // Dumas
   Route::prefix('dumas')->group(function () {
@@ -210,6 +223,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
 
     Route::post('document/{id}', [DocumentController::class, 'store'])->name('document.store');
     Route::delete('document/{id}', [DocumentController::class, 'store'])->name('document.destroy');
+
+    Route::post('arsip/{id}', [DumasController::class, 'arsip'])->name('document.arsip');
   });
 
 

@@ -19,6 +19,8 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
+
 @endsection
 
 @section('page-style')
@@ -67,6 +69,7 @@
 <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/bloodhound/bloodhound.js')}}"></script>
+<script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
@@ -183,6 +186,47 @@
       }
     });
   });
+  $('#doc_nd').on('click', function() {
+    var isChecked = $(this).prop('checked');
+    var table = 'nota_dinas';
+
+    $.ajax({
+      data: {
+        table: table,
+        id: $(this).data('id')
+      },
+      url: "".concat(baseUrl, "dumas/arsip/"),
+      type: 'POST',
+      success: function success(response) {
+        var iconType;
+        if (response.status == 200) {
+          iconType = 'success';
+        } else {
+          iconType = 'error';
+        }
+        // sweetalert
+        Swal.fire({
+          icon: response.status == 200 ? 'success' : 'error',
+          title: response.status == 200 ? 'Success' : 'Error',
+          text: response.message,
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        })
+      },
+      error: function error(err) {
+        $(this).prop('checked', isChecked);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Internal server Error',
+          icon: 'error',
+          customClass: {
+            confirmButton: 'btn btn-success'
+          }
+        })
+      }
+    });
+  });
 </script>
 
 <script>
@@ -204,6 +248,7 @@ function addParamToUrl(param, value) {
 
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> {{ $dumas->pelapor }} - {{ $dumas->satker }}
 </h4>
+
 <div class="row">
   <div class="col">
     <div class="card mb-3">
@@ -279,6 +324,7 @@ function addParamToUrl(param, value) {
                     <form action="{{ route('dumas.transaction', $dumas->id) }}" method="POST" enctype="multipart/form-data">
                       @csrf
                       @method('POST')
+                      <input type="text" name="dumas_id" id="dumas_id" value="{{ $dumas->id }}" hidden>
                       <div class="form-check checkbox-xl mb-2">
                         <input class="form-check-input" type="checkbox" value="true" name="sp2hp2" id="sp2hp2" {{ $dumas->sphp && $dumas->sphp->is_done == 1 ? 'checked' : '' }} />
                         <label class="form-check-label" for="sp2hp2">
@@ -512,8 +558,14 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select ND file. </div>
               </div>
               @else
-              <div class="mb-4">
-                <div><a href="{{$dumas->nd->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Nota Dinas">{{ $dumas->nd->number }}</a> <span class="badge bg-label-{{ $dumas->nd->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+              <div class="d-flex justify-content-between mb-4">
+                <div class=""><a href="{{$dumas->nd->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Nota Dinas">{{ $dumas->nd->number }}</a></div>
+                <div class="">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_nd" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd->id }}" {{ $dumas->nd->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_nd">Arsip</label>
+                  </div>
+                </div>
               </div>
               @endif
 
@@ -524,17 +576,43 @@ function addParamToUrl(param, value) {
               </div>
 
               <h5>Dokumen SPRIN</h5>
-              @if ($dumas->nd && !$dumas->sprin)
-              <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
-                <label for="bs-validation-name">Dokumen SPRIN</label>
-                <div class="valid-feedback"> Looks good! </div>
-                <div class="invalid-feedback"> Please select ND file. </div>
-              </div>
+              @if ($dumas->nd && count($dumas->sprin) === 0)
+              <div class="row">
+                <div class="col-sm-12 col-md-6">
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
+                    <label for="bs-validation-name">Dokumen SPRIN</label>
+                    <div class="valid-feedback"> Looks good! </div>
+                    <div class="invalid-feedback"> Please select ND file. </div>
+                  </div>
+                </div>
+                <div class="col-sm-12 col-md-6">
+                  <div class="form-floating form-floating-outline mb-4">
+                    <input type="date" name="sprin_date" class="form-control" id="bs-validation-date" required="">
+                    <label for="bs-validation-date">Berlaku Hingga</label>
+                    <div class="valid-feedback"> Looks good! </div>
+                    <div class="invalid-feedback"> Please select date. </div>
+                  </div>
+                </div>
+              </div>          
               @else
-              <div class="mb-4">
-                @if ($dumas->sprin->file)
-                <div><a href="{{$dumas->sprin->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sprin->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sprin->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+              <div class="d-flex justify-content-between mb-4">
+                @if ($dumas->sprin)
+                @foreach ($dumas->sprin as $s)
+                <div class="mb-2">
+                  <div><a href="{{$s->file}}" target="_blank" rel="noopener noreferrer" title="Lihat SPRIN">Lihat Dokumen</a></div>
+                  <div>Berlaku hingga {{ $s->valid_until }}</div>
+                  <div class="my-2">
+                    <button class="btn btn-primary w-full" role="button" id="add_sprin">Upload SPRIN</button>
+                  </div>
+                </div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_sprin" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $s->id }}" {{ $s->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_sprin">Arsip</label>
+                  </div>
+                </div>                             
+                @endforeach
                 @else
                 <div>Upload Dokumen Nota Dinas terlebih dahulu!</div>
                 @endif
@@ -548,7 +626,7 @@ function addParamToUrl(param, value) {
               </div>
 
               <h5>Dokumen BAI Saksi</h5>
-              @if ($dumas->sprin && !$dumas->bai_saksi)
+              @if (count($dumas->sprin) !== 0 && !$dumas->bai_saksi)
               <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="bai_saksi" class="form-control" id="bs-validation-name" required="" accept="application/pdf">
                 <label for="bs-validation-name">Dokumen BAI SaksiI</label>
@@ -556,9 +634,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select BAI file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->bai_saksi)
-                <div><a href="{{$dumas->bai_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->bai_saksi->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->bai_saksi->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->bai_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_bai_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->bai_saksi->id }}" {{ $dumas->bai_saksi->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_bai_saksi">Arsip</label>
+                  </div>
+                </div>  
                 @else
                 <div class="text-danger">Upload Dokumen SPRIN terlebih dahulu!</div>
                 @endif
@@ -574,9 +658,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select SP file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->sp_saksi)
-                <div><a href="{{$dumas->sp_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sp_saksi->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sp_saksi->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->sp_saksi->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_sp_saksi" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->sp_saksi->id }}" {{ $dumas->sp_saksi->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_sp_saksi">Arsip</label>
+                  </div>
+                </div> 
                 @else
                 <div class="text-danger">Upload Dokumen BAI Saksi terlebih dahulu!</div>
                 @endif
@@ -598,9 +688,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select BAI file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->bai_terlapor)
-                <div><a href="{{$dumas->bai_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->bai_terlapor->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->bai_terlapor->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->bai_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_bai_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->bai_terlapor->id }}" {{ $dumas->bai_terlapor->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_bai_terlapor">Arsip</label>
+                  </div>
+                </div> 
                 @else
                 <div class="text-danger">Upload Dokumen Pernyataan Saksi terlebih dahulu!</div>
                 @endif
@@ -616,9 +712,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select SP file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->sp_terlapor)
-                <div><a href="{{$dumas->sp_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->sp_terlapor->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->sp_terlapor->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->sp_terlapor->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="doc_sp_terlapor" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->sp_terlapor->id }}" {{ $dumas->sp_terlapor->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="doc_sp_terlapor">Arsip</label>
+                  </div>
+                </div> 
                 @else
                 <div class="text-danger">Upload Dokumen BAI terlebih dahulu!</div>
                 @endif
@@ -640,9 +742,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select SP file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->nd_lhp)
-                <div><a href="{{$dumas->nd_lhp->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->nd_lhp->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd_lhp->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->nd_lhp->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="nd_lhp" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd_lhp->id }}" {{ $dumas->nd_lhp->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="nd_lhp">Arsip</label>
+                  </div>
+                </div> 
                 @else
                 <div class="text-danger">Upload Dokumen Surat Penyataan Terlapor terlebih dahulu!</div>
                 @endif
@@ -664,9 +772,15 @@ function addParamToUrl(param, value) {
                 <div class="invalid-feedback"> Please select SP file. </div>
               </div>
               @else
-              <div class="mb-4">
+              <div class="d-flex justify-content-between mb-4">
                 @if ($dumas->nd_lhg)
-                <div><a href="{{$dumas->nd_lhg->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a> <span class="badge bg-label-{{ $dumas->nd_lhg->is_archived == 0 ? 'info' : 'success' }}">{{ $dumas->nd_lhg->is_archived == 0 ? 'Belum Diarsipkan' : 'Diarsipkan' }}</span></div>
+                <div><a href="{{$dumas->nd_lhg->file}}" target="_blank" rel="noopener noreferrer" title="Lihat Dokumen">Lihat Dokumen</a></div>
+                <div class="d-grid">
+                  <div class="form-check form-switch mb-2">
+                    <input class="form-check-input" type="checkbox" id="nd_lhg" data-bs-toggle="tooltip" data-bs-placement="top" title="Arsipkan Dokumen" data-id="{{ $dumas->nd_lhg->id }}" {{ $dumas->nd_lhg->is_archived == 1 ? 'checked' : '' }}>
+                    <label class="form-check-label" for="nd_lhg">Arsip</label>
+                  </div>
+                </div> 
                 @else
                 <div class="text-danger">Upload Dokumen ND LHP terlebih dahulu!</div>
                 @endif
