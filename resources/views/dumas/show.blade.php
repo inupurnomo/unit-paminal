@@ -29,8 +29,9 @@
 <style>
   .checkbox-lg .form-check-input{
   top: .8rem;
+  left: .5rem;
   scale: 1.4;
-  margin-right: 0.7rem;
+  margin-right: 1.5rem;
   }
 
   .checkbox-lg .form-check-label {
@@ -39,8 +40,9 @@
 
   .checkbox-xl .form-check-input {
   top: 1.2rem;
+  left: .5rem;
   scale: 1.7;
-  margin-right: 0.8rem;
+  margin-right: 1.5rem;
   }
 
   .checkbox-xl .form-check-label {
