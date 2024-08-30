@@ -1,7 +1,6 @@
-
 @extends('layouts/layoutMaster')
 
-@section('title', 'Dumas Baru - Dumas')
+@section('title', 'Dumas Baru')
 
 @section('vendor-style')
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/flatpickr/flatpickr.css')}}" />
@@ -118,22 +117,22 @@
 
           <hr />
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="perihal" class="form-control" id="bs-validation-name" placeholder="Perihal" required="" value="{{ old('perihal') }}">
-            <label for="bs-validation-name">Perihal</label>
+            <input type="text" name="perihal" class="form-control" id="bs-validation-perihal" placeholder="Perihal" required="" value="{{ old('perihal') }}">
+            <label for="bs-validation-perihal">Perihal</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter perihal. </div>
           </div>
 
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="dugaan" class="form-control" id="bs-validation-name" placeholder="Dugaan" required="" value="{{ old('dugaan') }}">
-            <label for="bs-validation-name">Dugaan</label>
+            <input type="text" name="dugaan" class="form-control" id="bs-validation-dugaan" placeholder="Dugaan" required="" value="{{ old('dugaan') }}">
+            <label for="bs-validation-dugaan">Dugaan</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter dugaan. </div>
           </div>
 
           <div class="form-floating form-floating-outline mb-4">
-            <input type="text" name="wujud_perbuatan" class="form-control" id="bs-validation-name" placeholder="Wujud Perbuatan" required="" value="{{ old('wujud_perbuatan') }}">
-            <label for="bs-validation-name">Wujud Perbuatan</label>
+            <input type="text" name="wujud_perbuatan" class="form-control" id="bs-validation-wp" placeholder="Wujud Perbuatan" required="" value="{{ old('wujud_perbuatan') }}">
+            <label for="bs-validation-wp">Wujud Perbuatan</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter wujud perbuatan. </div>
           </div>
@@ -160,7 +159,19 @@
             <div class="invalid-feedback"> Please enter the origin of dumas. </div>
           </div>
 
+          <hr />
+          <div class="form-floating form-floating-outline mb-4">
+            <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
+              <option value="">Pilih Penanggung Jawab</option>
+              @foreach ($user as $item)
+                  <option value="{{ $item->id }}">{{ $item->pangkat->nama_pangkat }} {{ $item->name }}</option>
+              @endforeach
+            </select>
+            <label for="select2Basic">Penanggung Jawab</label>
+          </div>
+          
           @if (auth()->user()->username == 'administrator')
+          <hr />
           <div class="form-floating form-floating-outline mb-4">
             <select id="den" name="den_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
               <option value="">Pilih Den</option>
@@ -182,15 +193,6 @@
           </div>
           @endif
           
-          <div class="form-floating form-floating-outline mb-4">
-            <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
-              <option value="">Pilih Penanggung Jawab</option>
-              @foreach ($user as $item)
-                  <option value="{{ $item->id }}">{{ $item->pangkat->nama_pangkat }} {{ $item->name }}</option>
-              @endforeach
-            </select>
-            <label for="select2Basic">Penanggung Jawab</label>
-          </div>
           <div class="row">
             <div class="col-12">
               <button role="submit" class="btn btn-primary waves-effect waves-light w-100">Tambah</button>

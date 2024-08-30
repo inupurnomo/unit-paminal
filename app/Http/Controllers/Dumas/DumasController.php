@@ -149,6 +149,9 @@ class DumasController extends Controller
   {
     $data['dumas'] = Dumas::find($id);
     $data['user'] = User::where('username', '<>', 'admin')->get();
+    $data['den'] = Den::all();
+    $data['unit'] = Unit::all();
+
     return view('dumas.edit', $data);
   }
 
@@ -161,24 +164,44 @@ class DumasController extends Controller
       'nd' => 'required|string',
       'tanggal' => 'required',
       'pelapor' => 'required|string',
-      'terlapor' => 'required|string',
+      'terlapor' => 'array',
       'pj_id' => 'required',
     ]);
     if ($validator->fails()) {
-      notify()->info('info');
+      notify()->info($validator->messages());
       return redirect()->back()->withErrors($validator)->withInput();
     }
     DB::beginTransaction();
 
     try {
       $dumas = Dumas::find($id);
-      $update = $dumas->update([
-        'tanggal' => $request->tanggal,
-        'pelapor' => $request->pelapor,
-        'terlapor' => $request->terlapor,
-        'pj_id' => $request->pj_id,
-        'update_user' => Auth::user()->id,
-      ]);
+      // $update = $dumas->update([
+      //   'tanggal' => $request->tanggal,
+      //   'pelapor' => $request->pelapor,
+      //   'terlapor' => $request->terlapor,
+      //   'pj_id' => $request->pj_id,
+      //   'update_user' => Auth::user()->id,
+      // ]);
+
+      $dumas->tanggal = $request->tanggal;
+      $dumas->pelapor = $request->pelapor;
+      $dumas->perihal = $request->perihal;
+      $dumas->dugaan = $request->dugaan;
+      $dumas->wujud_perbuatan = $request->wujud_perbuatan;
+      $dumas->pj_id = $request->pj_id;
+
+      foreach ($request->terlapor_id as $key => $value) {
+        Terlapor::updateOrCreate(
+          ['id' => $value],
+          ['name' => $request->terlapor_name[$key], 'date' => $request->terlapor_date[$key]]
+        );
+      }
+
+      if (Auth::user()->hasRole('administrator')) {
+        $dumas->den_id = $request->den_id;
+        $dumas->unit_id = $request->unit_id;
+      }
+
 
       if ($request->nd != $dumas->nd->number) {
         $nd = NotaDinas::where('dumas_id', $id);
@@ -187,6 +210,8 @@ class DumasController extends Controller
           'number' => $request->nd
         ]);
       }
+
+      $update = $dumas->save();
 
       DB::commit();
       if ($update) {
