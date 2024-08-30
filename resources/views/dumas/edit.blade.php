@@ -197,7 +197,8 @@
           @endif
           <div class="row">
             <div class="col-12">
-              <button role="submit" class="btn btn-primary waves-effect waves-light">Update</button>
+              <button role="submit" type="submit" class="btn btn-primary waves-effect waves-light">Update</button>
+              <button role="button" type="button" class="btn btn-outline-secondary waves-effect waves-light" onclick="window.history.back();">Cancel</button>
             </div>
           </div>
         </form>

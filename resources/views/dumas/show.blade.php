@@ -102,7 +102,8 @@
             <li class="nav-item" role="presentation">
               <button onclick="addParamToUrl('tab', 'documents')" type="button" class="nav-link d-flex flex-column gap-1 {{ $tab == 'documents' ? 'active' : '' }} waves-effect" role="tab" data-bs-toggle="tab" data-bs-target="#navs-documents-card" aria-controls="navs-documents-card" aria-selected="false" tabindex="-1"><i class="tf-icons mdi mdi-file-document-outline mdi-20px me-1"></i> Documents</button>
             </li>
-          <span class="tab-slider" style="left: 0px; width: 91.4062px; bottom: 0px;"></span></ul>
+            <span class="tab-slider" style="left: 0px; width: 91.4062px; bottom: 0px;"></span>
+          </ul>
         </div>
       </div>
       <div class="card-body px-0 py-0">
@@ -112,9 +113,9 @@
               <!-- Total Transactions & Report Chart -->
               <div class="col-xl-8">
                 <div class="h-100">
-                  <div class="card-body">
+                  <div class="card-body px-2 py-0">
                     <div class="col-md mb-4 mb-md-2">
-                      <div class="accordion mt-3" id="accordionExample">
+                      <div class="accordion" id="accordionExample">
                         <div class="accordion-item">
                           <h2 class="accordion-header" id="headingOne">
                             <button type="button" class="accordion-button collapsed" data-bs-toggle="collapse" data-bs-target="#accordionOne" aria-expanded="false" aria-controls="accordionOne">
@@ -686,6 +687,12 @@
       </div>
     </div>
   </div>
+</div>
+
+<div class="fab">
+  <a href="{{ route('dumas.edit', $dumas->id) }}"  title="Edit Dumas" type="button" class="btn btn-icon btn-primary btn-fab waves-effect waves-light">
+    <span class="tf-icons mdi mdi-pencil mdi-24px"></span>
+  </a>
 </div>
 
 <!-- endDumas Modal -->
