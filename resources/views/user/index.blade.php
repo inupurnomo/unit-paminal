@@ -27,7 +27,6 @@
 @section('page-script')
 <script src="{{asset('assets/js/user/user.js')}}"></script>
 <script src="{{asset('assets/js/forms-selects.js')}}"></script>
-
 @endsection
 
 @section('content')

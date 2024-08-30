@@ -27,7 +27,16 @@ class Controller extends BaseController
   
       $pathFile = $file->store($path, 'public');
       $url = Storage::url($pathFile);
-      return $url;
-      
+      return $url; 
+    }
+
+    public function deleteFile($file)
+    {
+      $path = str_replace('/storage/', '', $file);
+      if (Storage::disk('public')->exists($path)) {
+        return Storage::disk('public')->delete($path);
+      }
+
+      return 'not found';
     }
 }

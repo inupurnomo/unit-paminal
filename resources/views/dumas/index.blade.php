@@ -60,22 +60,56 @@
       <div class="card-header pb-1">
         <div class="d-flex justify-content-between">
           <a href="{{ route('dumas.show', $item->id ) }}" class="mb-1">{{ $item->pelapor }} - {{ strtoupper($item->satker) }}</a>
-          <div class="dropdown">
-            <button class="btn p-0" type="button" id="performanceOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              <i class="mdi mdi-dots-vertical mdi-24px"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="performanceOverviewDropdown">
-              <a class="dropdown-item" href="{{ route('dumas.show', $item->id) }}">Show</a>
-              <a class="dropdown-item" href="{{ route('dumas.edit', $item->id )}}">Edit</a>
-              <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('done-form{{$item->id}}').submit();">Selesai</a>
-              <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('delete-form{{$item->id}}').submit();">Delete</a>
-              <form method="POST" id='done-form{{$item->id}}' action="{{ route('dumas.markDone', $item->id) }}">
-                @csrf
-              </form>
-              <form method="POST" id='delete-form{{$item->id}}' action="{{ route('dumas.destroy', $item->id) }}">
-                @csrf
-                @method('DELETE')
-              </form>
+          <div class="d-flex gap-4 align-items-center">
+            <div>
+              @php
+              // Parse tanggal valid_until dari sprin_latest, jika ada, jika tidak berikan nilai default yang aman
+              $sprin_valid = $item->sprin_latest ? \Carbon\Carbon::parse($item->sprin_latest->valid_until) : null;
+              $today = \Carbon\Carbon::today(); // Tanggal hari ini
+              $hPlus7 = $today->copy()->addDays(7); // Tanggal H-7
+          
+              // Inisialisasi variabel untuk class dan tooltip
+              $isWarningShow = false;
+              $label = '';
+              $tooltip_title = '';
+          
+              // Cek apakah sprin_valid tidak null sebelum membandingkan tanggal
+              if ($sprin_valid) {
+                  if ($sprin_valid->between($today, $hPlus7)) {
+                      // Jika sprin_valid antara H-7 dan hari ini
+                      $label = 'warning';
+                      $tooltip_title = 'Sprin akan segera berakhir!';
+                      $isWarningShow = true;
+                  } elseif ($sprin_valid < $today) {
+                      // Jika sprin_valid sudah lewat
+                      $label = 'danger';
+                      $tooltip_title = 'Sprin Expired!';
+                      $isWarningShow = true;
+                  }
+              }
+              @endphp
+
+              @if ($isWarningShow)
+              <span class="badge badge-center rounded-pill bg-label-{{$label}}" style="cursor: pointer;" data-bs-toggle="tooltip" data-bs-placement="top" data-bs-original-title="{{$tooltip_title}}"><i class="mdi mdi-bell-outline"></i></span>
+              @endif
+            </div>
+            <div class="dropdown">
+              <button class="btn p-0" type="button" id="performanceOverviewDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i class="mdi mdi-dots-vertical mdi-24px"></i>
+              </button>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="performanceOverviewDropdown">
+                <a class="dropdown-item" href="{{ route('dumas.show', $item->id) }}">Show</a>
+                <a class="dropdown-item" href="{{ route('dumas.edit', $item->id )}}">Edit</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('done-form{{$item->id}}').submit();">Selesai</a>
+                <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('delete-form{{$item->id}}').submit();">Delete</a>
+                <form method="POST" id='done-form{{$item->id}}' action="{{ route('dumas.markDone', $item->id) }}">
+                  @csrf
+                </form>
+                <form method="POST" id='delete-form{{$item->id}}' action="{{ route('dumas.destroy', $item->id) }}">
+                  @csrf
+                  @method('DELETE')
+                </form>
+              </div>
             </div>
           </div>
         </div>

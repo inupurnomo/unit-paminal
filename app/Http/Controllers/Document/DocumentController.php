@@ -124,4 +124,40 @@ class DocumentController extends Controller
       return $this->response_json(500, 'Gagal!', null);
     }
   }
+
+  public function deleteDoc(Request $request, string $id)
+  {
+    $table = $request->table;
+    $doc_id = $request->id;
+
+    $tableValue = [
+      'nd' => 'nota_dinas',
+      'sprin' => 'sprins',
+      'bai_saksi' => 'b_a_i_saksis',
+      'sp_saksi' => 'pernyataan_saksis',
+      'bai_terlapor' => 'b_a_i_terlapors',
+      'sp_terlapor' => 'pernyataan_terlapors',
+      'lhp' => 'n_d_l_h_p_s',
+      'lhg' => 'n_d_l_h_g_s',
+    ];
+
+    if (array_key_exists($table, $tableValue)) {
+      $tableName = $tableValue[$table];
+      $data = DB::table($tableName)->find($doc_id);
+    } else {
+      return $this->response_json(500, 'Table tidak ditemukan!', null);
+    }
+
+    if ($data) {
+      $delete = DB::table($tableName)->where('id', $doc_id)->delete();
+    } else {
+      return $this->response_json(500, 'Data tidak ditemukan!', null);
+    }
+
+    if ($delete) {
+      return $this->response_json(200, 'Berhasil!', null);
+    } else {
+      return $this->response_json(500, 'Gagal!', null);
+    }
+  }
 }

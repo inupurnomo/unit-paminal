@@ -77,6 +77,9 @@ let events = [
               • <a href="/dumas/show/{{ $s->dumas_id }}" target="_blank" rel="noopener noreferrer" title="Lihat Dumas">{{ $s->name }} - {{ $s->telephone }}</a>
               </div>
               @endforeach
+              @if (count($saksi) == 0)
+                  <span>Tidak ada undangan</span>
+              @endif
               <hr />
               <h5>Undangan Terlapor</h5>
               @foreach ($terlapor as $t)
@@ -84,6 +87,9 @@ let events = [
               • <a href="/dumas/show/{{ $t->dumas_id }}" target="_blank" rel="noopener noreferrer" title="Lihat Dumas">{{ $t->name }} - {{ $t->dumas->satker }}</a>
               </div>
               @endforeach
+              @if (count($terlapor) == 0)
+              <span>Tidak ada undangan</span>
+          @endif
             </div>
           </div>
         </div>
@@ -100,7 +106,7 @@ let events = [
   <!-- Statistics Total Order -->
   <div class="col-sm-6 col-lg-6 mb-4">
     <div class="card card-border-shadow-success h-100">
-      <div class="card-body">
+      <a href="{{ route('dumas') }}" class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">
           <div class="avatar me-2">
             <i class="mdi mdi-book-multiple-outline mdi-36px"></i>
@@ -108,7 +114,7 @@ let events = [
           <h4 class="ms-1 mb-0 display-6">{{ $dumas_aktif }}</h4>
         </div>
         <p class="mb-0 text-heading">Total Dumas Aktif</p>
-      </div>
+      </a>
     </div>
   </div>
   <!--/ Statistics Total Order -->
@@ -116,7 +122,7 @@ let events = [
   <!-- Sessions line chart -->
   <div class="col-sm-6 col-lg-6 mb-4">
     <div class="card card-border-shadow-info h-100">
-      <div class="card-body">
+      <a href="{{ route('dumas.history') }}" class="card-body">
         <div class="d-flex align-items-center mb-2 pb-1">
           <div class="avatar me-2">
             <i class="mdi mdi-book-minus mdi-36px"></i>
@@ -124,7 +130,7 @@ let events = [
           <h4 class="ms-1 mb-0 display-6">{{ $dumas_selesai }}</h4>
         </div>
         <p class="mb-0 text-heading">Total Dumas Selesai</p>
-      </div>
+      </a>
     </div>
   </div>
   <!--/ Sessions line chart -->

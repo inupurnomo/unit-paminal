@@ -48,7 +48,7 @@
     <div class="card">
       <h5 class="card-header">Edit Dumas - <strong>{{ $dumas->pelapor }}</strong></h5>
       <div class="card-body">
-        <form class="needs-validation" action="{{route('dumas.update', $dumas->id )}}" method="POST" novalidate="">
+        <form class="needs-validation" action="{{route('dumas.update', $dumas->id )}}" method="POST" novalidate="" enctype="multipart/form-data">
           @csrf
           @method('PUT')
           <div class="form-floating form-floating-outline mb-4">
@@ -56,6 +56,13 @@
             <label for="bs-validation-name">Nomor ND</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter ND number. </div>
+          </div>
+          <div class="form-floating form-floating-outline mb-4">
+            <input type="file" name="nd_file" class="form-control" id="bs-validation-name" accept="application/pdf">
+            <label for="bs-validation-name">Dokumen ND</label>
+            <div class="valid-feedback"> Looks good! </div>
+            <div class="invalid-feedback"> Please select ND file. </div>
+            <div class="mt-2">ND Saat ini: <a href="{{$dumas->nd->file}}" target="_blank" title="Litat Dokumen">{{ $dumas->nd->number }}</a></div>
           </div>
           <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="tanggal" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly" value="{{ $dumas->tanggal }}">
@@ -91,12 +98,13 @@
           </div>
 
           <hr />
+          <h6>Terlapor</h6>
           @foreach ($dumas->terlapor as $t)  
           <div class="row">
             <div class="col">
               <div class="form-floating form-floating-outline mb-4">
                 <input type="text" name="terlapor_id[]" id="terlapor_id" value="{{ $t->id }}" hidden>
-                <input type="text" name="terlapor_name[]" class="form-control" id="terlapor-name" placeholder="Nama Terlapor" required="" value="{{ $t->name }}">
+                <input type="text" name="terlapor_name[]" class="form-control" id="terlapor_name" placeholder="Nama Terlapor" required="" value="{{ $t->name }}">
                 <label for="terlapor-name">Nama Terlapor</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please enter your name. </div>
@@ -119,6 +127,40 @@
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter satker. </div>
           </div>
+
+          @if (count($dumas->witness) != 0)
+          <hr />
+          <h6>Saksi</h6>
+          @foreach ($dumas->witness as $w)
+          <input type="text" name="witness_id[]" id="witness_id" value="{{ $w->id }}" hidden>
+          <div class="row">
+            <div class="col-sm-12 col-md-6">
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="text" name="witness_name[]" class="form-control" id="witness_name" placeholder="Nama Terlapor" value="{{ $w->name }}">
+                <label for="terlapor_name">Nama Saksi</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please enter witness name. </div>
+              </div>  
+            </div> 
+            <div class="col-sm-12 col-md-6">
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="text" name="witness_phone[]" class="form-control" id="witness_phone" placeholder="Nomor Telephone" value="{{ $w->telephone }}" oninput="this.value = this.value.replace(/[^0-9+]/g, '');" maxlength="15">
+                <label for="witness_phone">No Telephone Saksi</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please enter witness name. </div>
+              </div>  
+            </div> 
+            <div class="col">
+              <div class="form-floating form-floating-outline mb-4">
+                <input type="date" name="witness_date[]"class="form-control" id="witness_date" placeholder="Tanggal Klarifikasi" value="{{ $w->date }}">
+                <label for='witness_date'>Tanggal Klarifikasi</label>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please enter the date. </div>
+              </div>
+            </div>   
+          </div>
+          @endforeach
+          @endif
 
           <hr/>
           <div class="form-floating form-floating-outline mb-4">

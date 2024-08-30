@@ -202,13 +202,35 @@ class DumasController extends Controller
         $dumas->unit_id = $request->unit_id;
       }
 
-
       if ($request->nd != $dumas->nd->number) {
         $nd = NotaDinas::where('dumas_id', $id);
-
         $nd->update([
-          'number' => $request->nd
+          'number' => $request->nd,
         ]);
+      }
+
+      if ($request->nd_file) {
+        $nd = NotaDinas::where('dumas_id', $id)->first();
+
+        $old_nd = $nd->file;
+
+        $file_nd = $this->storeFile($request->nd_file, 'file/nd');
+        
+        $nd->update([
+          'number' => $request->nd,
+          'file' => $file_nd,
+        ]);
+
+        $this->deleteFile($old_nd);
+      }
+
+      if ($request->witness_id) {
+        foreach ($request->witness_id as $key => $value) {
+          Witness::updateOrCreate(
+            ['id' => $request->witness_id[$key]],
+            ['name' => $request->witness_name[$key], 'telephone' => $request->witness_phone[$key], 'date' => $request->witness_date[$key]]
+          );
+        }
       }
 
       $update = $dumas->save();
@@ -484,6 +506,15 @@ class DumasController extends Controller
 
       notify()->error($th->getMessage());
       return redirect()->back()->withErrors($validator)->withInput();
+    }
+  }
+
+  public function deleteWitness(Request $request, string $id) {
+    $delete = Witness::find($id)->delete();
+    if ($delete) {
+      return $this->response_json(200, 'Berhasil!', null);
+    } else {
+      return $this->response_json(500, 'Gagal!', null);
     }
   }
 }
