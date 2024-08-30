@@ -63,7 +63,7 @@ class DumasController extends Controller
       })
       ->when($startDate && $endDate, function ($query) use ($startDate, $endDate) {
         return $query->whereBetween('tanggal', [$startDate, $endDate]);
-      })->orderBy('tanggal', 'desc')->paginate(1);
+      })->orderBy('tanggal', 'desc')->paginate(15);
 
     return view('dumas.index', $data);
   }
