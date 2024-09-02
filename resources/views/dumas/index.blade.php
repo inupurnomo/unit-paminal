@@ -81,6 +81,11 @@
     <i class="mdi mdi-star-outline"></i>
   </div>
 </div>
+@if (app('request')->all())
+<div class="mb-4">
+  <span class="">Ditemukan <strong>{{ count($dumas) }}</strong> dumas</span>
+</div>
+@endif
 <div class="row gy-4">
 @foreach ($dumas as $item) 
   <!-- Performance Overview Chart-->

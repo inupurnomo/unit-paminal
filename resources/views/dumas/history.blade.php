@@ -29,7 +29,7 @@
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Dumas History
 </h4>
 
-<form action="{{ route('dumas') }}" method="GET">
+<form action="{{ route('dumas.history') }}" method="GET">
   <div class="row mb-1">
     <div class="col-sm-12 col-md-6 mb-2">
       <div class="form-floating form-floating-outline">
@@ -83,6 +83,12 @@
     <i class="mdi mdi-star-outline"></i>
   </div>
 </div>
+
+@if (app('request')->all())
+<div class="mb-4">
+  <span class="">Ditemukan <strong>{{ count($dumas) }}</strong> dumas</span>
+</div>
+@endif
 
 <div class="row gy-4">
 @foreach ($dumas as $item)
