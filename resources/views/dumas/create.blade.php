@@ -120,17 +120,6 @@
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter the origin of dumas. </div>
           </div>
-
-          <hr />
-          <div class="form-floating form-floating-outline mb-4">
-            <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
-              <option value="">Pilih Penanggung Jawab</option>
-              @foreach ($user as $item)
-                  <option value="{{ $item->id }}">{{ $item->pangkat->nama_pangkat }} {{ $item->name }}</option>
-              @endforeach
-            </select>
-            <label for="select2Basic">Penanggung Jawab</label>
-          </div>
           
           @if (auth()->user()->username == 'administrator')
           <hr />
@@ -154,6 +143,17 @@
             <label for="unit">Unit</label>
           </div>
           @endif
+          
+          <hr />
+          <div class="form-floating form-floating-outline mb-4">
+            <select id="select2Basic" name="pj_id" class="select2 form-select form-select-lg" data-allow-clear="true" required="">
+              <option value="">Pilih Penanggung Jawab</option>
+              @foreach ($user as $item)
+                  <option value="{{ $item->id }}">{{ $item->pangkat->nama_pangkat }} {{ $item->name }}</option>
+              @endforeach
+            </select>
+            <label for="select2Basic">Penanggung Jawab</label>
+          </div>
           
           <div class="row">
             <div class="col-12">

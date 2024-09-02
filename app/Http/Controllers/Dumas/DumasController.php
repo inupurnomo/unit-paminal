@@ -43,7 +43,20 @@ class DumasController extends Controller
     $query = $request->q;
     $startDate = $request->start;
     $endDate = $request->end;
+
+    $den = Auth::user()->den_id ?? $request->den_id;
+    $unit = Auth::user()->unit_id ?? $request->unit_id;
+
+    $data['den'] = Den::all();
+    $data['unit'] = Unit::all();
+
     $data['dumas'] = Dumas::where('is_done', 0)
+      ->when($den, function ($query) use ($den) {
+        return $query->where('den_id', $den);
+      })
+      ->when($unit, function ($query) use ($unit) {
+        return $query->where('unit_id', $unit);
+      })
       ->when($query, function ($queryBuilder, $query) {
         return $queryBuilder->where(function ($subQuery) use ($query) {
           $subQuery->where('pelapor', 'LIKE', '%' . $query . '%')
@@ -70,8 +83,16 @@ class DumasController extends Controller
 
   public function create()
   {
+    $den = Auth::user()->den_id;
+    $unit = Auth::user()->unit_id;
     $pageConfigs = ['myLayout' => 'horizontal'];
-    $user = User::where('username', '<>', 'administrator')->get();
+    $user = User::where('username', '<>', 'administrator')
+    ->when($den, function ($query) use ($den) {
+      return $query->where('den_id', $den);
+    })
+    ->when($unit, function ($query) use ($unit) {
+      return $query->where('unit_id', $unit);
+    })->get();
     $den = Den::all();
     $unit = Unit::all();
 
@@ -147,8 +168,17 @@ class DumasController extends Controller
 
   public function edit(string $id)
   {
+    $den = Auth::user()->den_id;
+    $unit = Auth::user()->unit_id;
+
     $data['dumas'] = Dumas::find($id);
-    $data['user'] = User::where('username', '<>', 'admin')->get();
+    $data['user'] = User::where('username', '<>', 'administrator')
+    ->when($den, function ($query) use ($den) {
+      return $query->where('den_id', $den);
+    })
+    ->when($unit, function ($query) use ($unit) {
+      return $query->where('unit_id', $unit);
+    })->get();
     $data['den'] = Den::all();
     $data['unit'] = Unit::all();
 
@@ -158,7 +188,6 @@ class DumasController extends Controller
   public function update(Request $request, string $id)
   {
     $data['dumas'] = Dumas::find($id);
-    $data['user'] = User::where('username', '<>', 'admin')->get();
 
     $validator = Validator::make($request->all(), [
       'nd' => 'required|string',
@@ -175,13 +204,6 @@ class DumasController extends Controller
 
     try {
       $dumas = Dumas::find($id);
-      // $update = $dumas->update([
-      //   'tanggal' => $request->tanggal,
-      //   'pelapor' => $request->pelapor,
-      //   'terlapor' => $request->terlapor,
-      //   'pj_id' => $request->pj_id,
-      //   'update_user' => Auth::user()->id,
-      // ]);
 
       $dumas->tanggal = $request->tanggal;
       $dumas->pelapor = $request->pelapor;
@@ -197,7 +219,7 @@ class DumasController extends Controller
         );
       }
 
-      if (Auth::user()->hasRole('administrator')) {
+      if ($request->den_id && $request->unit_id) {
         $dumas->den_id = $request->den_id;
         $dumas->unit_id = $request->unit_id;
       }
@@ -215,7 +237,7 @@ class DumasController extends Controller
         $old_nd = $nd->file;
 
         $file_nd = $this->storeFile($request->nd_file, 'file/nd');
-        
+
         $nd->update([
           'number' => $request->nd,
           'file' => $file_nd,
@@ -266,7 +288,17 @@ class DumasController extends Controller
     $query = $request->q;
     $startDate = $request->start;
     $endDate = $request->end;
+    
+    $den = Auth::user()->den_id ?? null;
+    $unit = Auth::user()->unit_id ?? null;
+
     $data['dumas'] = Dumas::where('is_done', 1)
+      ->when($den, function ($query) use ($den) {
+        return $query->where('den_id', $den);
+      })
+      ->when($unit, function ($query) use ($unit) {
+        return $query->where('unit_id', $unit);
+      })
       ->when($query, function ($queryBuilder, $query) {
         return $queryBuilder->where(function ($subQuery) use ($query) {
           $subQuery->where('pelapor', 'LIKE', '%' . $query . '%')
@@ -509,7 +541,8 @@ class DumasController extends Controller
     }
   }
 
-  public function deleteWitness(Request $request, string $id) {
+  public function deleteWitness(Request $request, string $id)
+  {
     $delete = Witness::find($id)->delete();
     if ($delete) {
       return $this->response_json(200, 'Berhasil!', null);

@@ -8,57 +8,80 @@ use App\Models\Terlapor;
 use App\Models\Witness;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
 class DashboardController extends Controller
 {
-    public function index() {
-      $today = Carbon::today()->format('Y-m-d');
-      $data['saksi'] = Witness::where('date', $today)->get();
-      $data['terlapor'] = Terlapor::where('date', $today)->get();
+  public function index()
+  {
+    $den = Auth::user()->den_id;
+    $unit = Auth::user()->unit_id;
 
-      $data['dumas_aktif'] = Dumas::where('is_done', 0)->get()->count();
-      $data['dumas_selesai'] = Dumas::where('is_done', 1)->get()->count();
-      
-      return view('dashboard.index', $data);
-    }
-    
-    public function getJadwal() {
-      // Ambil semua data dari Witness dan Terlapor
-      $witnessData = [];
-      $terlaporData =[];
-      $witnessData = Witness::all()->map(function ($item) {
-          return [
-              'id' => '1'.$item['id'],
-              'url' => url('/') . '/dumas/show/' . $item->dumas_id,
-              'title' => $item->name,
-              'start' => $item['date'],
-              'allDay' => true,
-              'extendedProps' => [
-                  'calendar' => 'Saksi' // Tentukan 'Saksi' jika berasal dari Witness
-              ]
-          ];
+    $today = Carbon::today()->format('Y-m-d');
+    $data['saksi'] = Witness::where('date', $today)
+      ->when($den, function ($query) use ($den, $unit) {
+        return $query->whereHas('dumas', function($q) use ($den, $unit) {
+          $q->where('den_id', $den)
+          ->where('unit_id', $unit);
+        });
+      })->get();
+    $data['terlapor'] = Terlapor::where('date', $today)
+    ->when($den, function ($query) use ($den, $unit) {
+      return $query->whereHas('dumas', function($q) use ($den, $unit) {
+        $q->where('den_id', $den)
+        ->where('unit_id', $unit);
       });
-  
-      $terlaporData = Terlapor::whereNotNull('date')->get()->map(function ($item) {
-          return [
-              'id' => '2'.$item['id'],
-              'url' => url('/') . '/dumas/show/' . $item->dumas_id,
-              'title' => $item->name,
-              'start' => $item['date'],
-              'allDay' => true,
-              'extendedProps' => [
-                  'calendar' => 'Terlapor' // Tentukan 'Terlapor' jika berasal dari Terlapor
-              ]
-          ];
-      });
+    })->get();
 
-      // dd($witnessData);
-  
-      // Gabungkan data saksi dan terlapor
-      $combinedData = $terlaporData->merge($witnessData)->toArray();
-  
-      return response()->json($combinedData);
+    $data['dumas_aktif'] = Dumas::where('is_done', 0)
+      ->when($den, function ($query) use ($den) {
+        return $query->where('den_id', $den);
+      })
+      ->when($unit, function ($query) use ($unit) {
+        return $query->where('unit_id', $unit);
+      })->get()->count();
+    $data['dumas_selesai'] = Dumas::where('is_done', 1)->get()->count();
+
+    return view('dashboard.index', $data);
   }
-   
+
+  public function getJadwal()
+  {
+    // Ambil semua data dari Witness dan Terlapor
+    $witnessData = [];
+    $terlaporData = [];
+    $witnessData = Witness::all()->map(function ($item) {
+      return [
+        'id' => '1' . $item['id'],
+        'url' => url('/') . '/dumas/show/' . $item->dumas_id,
+        'title' => $item->name,
+        'start' => $item['date'],
+        'allDay' => true,
+        'extendedProps' => [
+          'calendar' => 'Saksi' // Tentukan 'Saksi' jika berasal dari Witness
+        ]
+      ];
+    });
+
+    $terlaporData = Terlapor::whereNotNull('date')->get()->map(function ($item) {
+      return [
+        'id' => '2' . $item['id'],
+        'url' => url('/') . '/dumas/show/' . $item->dumas_id,
+        'title' => $item->name,
+        'start' => $item['date'],
+        'allDay' => true,
+        'extendedProps' => [
+          'calendar' => 'Terlapor' // Tentukan 'Terlapor' jika berasal dari Terlapor
+        ]
+      ];
+    });
+
+    // dd($witnessData);
+
+    // Gabungkan data saksi dan terlapor
+    $combinedData = $terlaporData->merge($witnessData)->toArray();
+
+    return response()->json($combinedData);
+  }
 }

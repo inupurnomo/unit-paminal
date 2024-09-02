@@ -4,6 +4,8 @@
 
 @section('vendor-style')
 {{-- <link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}" /> --}}
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
 @endsection
 
 @section('page-style')
@@ -13,10 +15,13 @@
 
 @section('vendor-script')
 {{-- <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script> --}}
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
 @endsection
 
 @section('page-script')
 {{-- <script src="{{asset('assets/js/cards-analytics.js')}}"></script> --}}
+<script src="{{asset('assets/js/forms-selects.js')}}"></script>
 @endsection
 
 @section('content')
@@ -42,6 +47,27 @@
         <label for="date-end">End</label>
       </div>
     </div>
+    @if (auth()->user()->username == 'administrator')
+    <div class="form-floating form-floating-outline mb-4">
+      <select id="den" name="den_id" class="select2 form-select form-select-lg" data-allow-clear="true">
+        <option value="">Pilih Den</option>
+        @foreach ($den as $d)
+            <option value="{{ $d->id }}">{{ $d->name }}</option>
+        @endforeach
+      </select>
+      <label for="den">Pilih Den</label>
+    </div>
+
+    <div class="form-floating form-floating-outline mb-4">
+      <select id="unit" name="unit_id" class="select2 form-select form-select-lg" data-allow-clear="true">
+        <option value="">Pilih Unit</option>
+        @foreach ($unit as $u)
+            <option value="{{ $u->id }}">{{ $u->name }}</option>
+        @endforeach
+      </select>
+      <label for="unit">Pilih Unit</label>
+    </div>
+    @endif
     <div class="col-sm-12 col-md-2 d-grid">
       <button class="btn btn-primary waves-effect waves-light" type="submit">Filter</button>
     </div>

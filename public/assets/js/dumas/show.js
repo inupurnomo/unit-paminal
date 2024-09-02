@@ -56,7 +56,7 @@ $(document).ready(function () {
             </select>
             <label for="evi${noBukti}">Pilih Type</label>
           </div>
-          <div class="col-sm-12 col-md-8">
+          <div class="col-sm-12 col-md-8 mt-2">
             <div class="form-floating form-floating-outline mb-2">
               <input type="text" name="evidence_name[]" class="form-control" id="bs-validation-name" placeholder="Nama Bukti" required=""">
               <label for="bs-validation-name">Nama Bukti</label>
@@ -64,7 +64,7 @@ $(document).ready(function () {
               <div class="invalid-feedback"> Please enter the name of evidence. </div>
             </div>
           </div>
-          <div class="col-sm-12 col-md-12">
+          <div class="col-sm-12 col-md-12 mt-2">
             <div class="form-floating form-floating-outline mb-2">
               <input type="file" name="evidence_file[]" class="form-control" id="evi_name${noBukti}" required="">
               <label for="evi_name${noBukti}">Pilih File</label>
