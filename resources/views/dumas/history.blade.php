@@ -4,6 +4,8 @@
 
 @section('vendor-style')
 {{-- <link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}" /> --}}
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
+<link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
 @endsection
 
 @section('page-style')
@@ -13,10 +15,13 @@
 
 @section('vendor-script')
 {{-- <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script> --}}
+<script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
+<script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
 @endsection
 
 @section('page-script')
 {{-- <script src="{{asset('assets/js/cards-analytics.js')}}"></script> --}}
+<script src="{{asset('assets/js/forms-selects.js')}}"></script>
 @endsection
 
 @section('content')
@@ -24,29 +29,53 @@
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Dumas History
 </h4>
 
-<form action="{{ route('dumas.history') }}" method="GET">
-  <div class="row my-4">
-    <div class="col-sm-12 col-md-6">
+<form action="{{ route('dumas') }}" method="GET">
+  <div class="row mb-1">
+    <div class="col-sm-12 col-md-6 mb-2">
       <div class="form-floating form-floating-outline">
         <input type="text" name="q" id="q" class="form-control" placeholder="Pencarian..." value="{{ app('request')->input('q') }}" autocomplete="off">
         <label for="q">Pencarian</label>
       </div>
     </div>
-    <div class="col-sm-12 col-md-2">
+    <div class="col-sm-12 col-md-3 mb-2">
       <div class="form-floating form-floating-outline">
         <input type="date" name="start" id="date" class="form-control" placeholder="Tanggal"" value="{{ app('request')->input('start') }}">
         <label for="date">Start</label>
       </div>
     </div>
-    <div class="col-sm-12 col-md-2">
+    <div class="col-sm-12 col-md-3 mb-2">
       <div class="form-floating form-floating-outline">
         <input type="date" name="end" id="end" class="form-control" placeholder="Tanggal"" value="{{ app('request')->input('end') }}">
         <label for="date-end">End</label>
       </div>
     </div>
-    <div class="col-sm-12 col-md-2 d-grid">
-      <button class="btn btn-primary waves-effect waves-light" type="submit">Filter</button>
+  </div>
+
+  @if (auth()->user()->username == 'administrator')
+  <div class="row">
+    <div class="form-floating form-floating-outline mb-2 col-6">
+      <select id="den" name="den" class="select2 form-select form-select-lg" data-allow-clear="true">
+        <option value="">Pilih Den</option>
+        @foreach ($den as $d)
+            <option value="{{ $d->id }}" {{ app('request')->input('den') == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+        @endforeach
+      </select>
+      <label for="den">Pilih Den</label>
     </div>
+
+    <div class="form-floating form-floating-outline mb-2 col-6">
+      <select id="unit" name="unit" class="select2 form-select form-select-lg" data-allow-clear="true">
+        <option value="">Pilih Unit</option>
+        @foreach ($unit as $u)
+            <option value="{{ $u->id }}" {{ app('request')->input('unit') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+        @endforeach
+      </select>
+      <label for="unit">Pilih Unit</label>
+    </div>
+  </div>
+  @endif
+  <div class="col-12 d-grid">
+    <button class="btn btn-primary waves-effect waves-light w-100" type="submit">Filter</button>
   </div>
 </form>
 <div class="divider">

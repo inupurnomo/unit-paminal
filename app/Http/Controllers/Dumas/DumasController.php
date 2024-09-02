@@ -44,8 +44,8 @@ class DumasController extends Controller
     $startDate = $request->start;
     $endDate = $request->end;
 
-    $den = Auth::user()->den_id ?? $request->den_id;
-    $unit = Auth::user()->unit_id ?? $request->unit_id;
+    $den = Auth::user()->den_id ?? $request->den;
+    $unit = Auth::user()->unit_id ?? $request->unit;
 
     $data['den'] = Den::all();
     $data['unit'] = Unit::all();
@@ -289,9 +289,12 @@ class DumasController extends Controller
     $startDate = $request->start;
     $endDate = $request->end;
     
-    $den = Auth::user()->den_id ?? null;
-    $unit = Auth::user()->unit_id ?? null;
+    $den = Auth::user()->den_id ?? $request->den;
+    $unit = Auth::user()->unit_id ?? $request->unit;
 
+    $data['den'] = Den::all();
+    $data['unit'] = Unit::all();
+    
     $data['dumas'] = Dumas::where('is_done', 1)
       ->when($den, function ($query) use ($den) {
         return $query->where('den_id', $den);
