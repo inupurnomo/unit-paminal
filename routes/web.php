@@ -55,6 +55,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::post('end/{id}', [DumasController::class, 'endDumas'])->name('dumas.end');
 
     Route::delete('witness/{id}', [DumasController::class, 'deleteWitness'])->name('dumas.deleteWitness');
+    Route::delete('evidence/{id}', [DumasController::class, 'deleteEvidence'])->name('dumas.deleteEvidence');
 
     Route::post('document/{id}', [DocumentController::class, 'store'])->name('document.store');
     Route::delete('document/{id}', [DocumentController::class, 'deleteDoc'])->name('document.destroy');

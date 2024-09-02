@@ -550,4 +550,18 @@ class DumasController extends Controller
       return $this->response_json(500, 'Gagal!', null);
     }
   }
+
+  public function deleteEvidence(Request $request, string $id)
+  {
+    $data = Evidence::find($id);
+    $old_evi = $data->file;
+    
+    $delete = Evidence::find($id)->delete();
+    if ($delete) {
+      $this->deleteFile($old_evi);
+      return $this->response_json(200, 'Berhasil!', null);
+    } else {
+      return $this->response_json(500, 'Gagal!', null);
+    }
+  } 
 }
