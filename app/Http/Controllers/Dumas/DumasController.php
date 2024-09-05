@@ -506,18 +506,15 @@ class DumasController extends Controller
     }
   }
 
-  public function progress_destroy(string $id)
+  public function deleteProgress(Request $request, string $id)
   {
     $delete = ProgressDumas::find($id)->delete();
-
     if ($delete) {
-      notify()->success('Progress berhasil dihapus!');
-      return redirect()->back();
+      return $this->response_json(200, 'Berhasil!', null);
     } else {
-      notify()->error('Progress gagal dihapus!');
-      return redirect()->back();
+      return $this->response_json(500, 'Gagal!', null);
     }
-  }
+  } 
 
   public function endDumas(Request $request, string $id)
   {

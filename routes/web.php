@@ -51,7 +51,7 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('history', [DumasController::class, 'history'])->name('dumas.history');
     Route::post('transaction/{id}', [DumasController::class, 'transaction'])->name('dumas.transaction');
     Route::post('progress/{id}', [DumasController::class, 'progress'])->name('progress.add');
-    Route::delete('progress/{id}', [DumasController::class, 'progress_destroy'])->name('progress.destroy');
+    Route::delete('progress/{id}', [DumasController::class, 'deleteProgress'])->name('progress.destroy');
     Route::post('end/{id}', [DumasController::class, 'endDumas'])->name('dumas.end');
 
     Route::delete('witness/{id}', [DumasController::class, 'deleteWitness'])->name('dumas.deleteWitness');
