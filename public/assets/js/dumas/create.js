@@ -17,7 +17,7 @@
                 </div>
               </div>
               <div class="col-2">
-                <button type="button" class="btn btn-danger remove_attach" title='Hapus'><i class="mdi mdi-delete me-1"></i></button>
+                <button type="button" class="btn btn-danger remove_attach" title='Hapus'><i class="mdi mdi-delete"></i></button>
               </div>
             </div>`
           );
