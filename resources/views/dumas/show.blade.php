@@ -533,7 +533,7 @@
                           </div>
                           <div class="d-flex justify-content-between flex-wrap">
                             <div>
-                              <span>{{ $p->value }}</span>
+                              <span>{!! nl2br(e($p->value) )!!}</span>
                             </div>
                           </div>
                         </div>
