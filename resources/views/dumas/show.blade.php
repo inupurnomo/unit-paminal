@@ -337,12 +337,27 @@
                           SP2 HP2
                         </label>
                       </div>
-                      <div class="form-check checkbox-xl mb-2">
+                      <div class="form-check checkbox-xl">
                         <input class="form-check-input" type="checkbox" value="true" name="klarifikasi" id="klarifikasi" {{ $dumas->klarifikasi && $dumas->klarifikasi->is_done == 1 ? 'checked' : '' }} />
                         <label class="form-check-label" for="klarifikasi">
                           Jadwal Klarifikasi Pelapor
+                          @if ($dumas->date_pelapor)    
+                          <span class="badge bg-label-info">
+                            {{ \Carbon\Carbon::parse($dumas->date_pelapor)->translatedFormat('l, d F Y') }}
+                          </span>
+                          @endif
                         </label>
                       </div>
+                      @if (!$dumas->date_pelapor)
+                      <div class="col-sm-12 col-md-6 mt-3">
+                        <div class="form-floating form-floating-outline">
+                          <input type="date" name="date_pelapor" class="form-control" id='date_pelapor' placeholder="Tanggal Klarifikasi">
+                          <label for="date_pelapor">Tanggal Klarifikasi</label>
+                          <div class="valid-feedback"> Looks good! </div>
+                          <div class="invalid-feedback"> Please enter the date. </div>
+                        </div>
+                      </div>
+                      @endif
                       <div class="form-check checkbox-xl mb-2">
                         <input class="form-check-input" type="checkbox" value="true" name="sprin_lidik" id="sprin_lidik" {{ $dumas->sprinlidik && $dumas->sprinlidik->is_done == 1 ? 'checked' : '' }} />
                         <label class="form-check-label" for="sprin_lidik">

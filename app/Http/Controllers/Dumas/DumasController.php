@@ -87,12 +87,12 @@ class DumasController extends Controller
     $unit = Auth::user()->unit_id;
     $pageConfigs = ['myLayout' => 'horizontal'];
     $user = User::where('username', '<>', 'administrator')
-    ->when($den, function ($query) use ($den) {
-      return $query->where('den_id', $den);
-    })
-    ->when($unit, function ($query) use ($unit) {
-      return $query->where('unit_id', $unit);
-    })->get();
+      ->when($den, function ($query) use ($den) {
+        return $query->where('den_id', $den);
+      })
+      ->when($unit, function ($query) use ($unit) {
+        return $query->where('unit_id', $unit);
+      })->get();
     $den = Den::all();
     $unit = Unit::all();
 
@@ -173,12 +173,12 @@ class DumasController extends Controller
 
     $data['dumas'] = Dumas::find($id);
     $data['user'] = User::where('username', '<>', 'administrator')
-    ->when($den, function ($query) use ($den) {
-      return $query->where('den_id', $den);
-    })
-    ->when($unit, function ($query) use ($unit) {
-      return $query->where('unit_id', $unit);
-    })->get();
+      ->when($den, function ($query) use ($den) {
+        return $query->where('den_id', $den);
+      })
+      ->when($unit, function ($query) use ($unit) {
+        return $query->where('unit_id', $unit);
+      })->get();
     $data['den'] = Den::all();
     $data['unit'] = Unit::all();
 
@@ -207,6 +207,7 @@ class DumasController extends Controller
 
       $dumas->tanggal = $request->tanggal;
       $dumas->pelapor = $request->pelapor;
+      $dumas->date_pelapor = $request->date_pelapor;
       $dumas->perihal = $request->perihal;
       $dumas->dugaan = $request->dugaan;
       $dumas->wujud_perbuatan = $request->wujud_perbuatan;
@@ -288,13 +289,13 @@ class DumasController extends Controller
     $query = $request->q;
     $startDate = $request->start;
     $endDate = $request->end;
-    
+
     $den = Auth::user()->den_id ?? $request->den;
     $unit = Auth::user()->unit_id ?? $request->unit;
 
     $data['den'] = Den::all();
     $data['unit'] = Unit::all();
-    
+
     $data['dumas'] = Dumas::where('is_done', 1)
       ->when($den, function ($query) use ($den) {
         return $query->where('den_id', $den);
@@ -362,13 +363,18 @@ class DumasController extends Controller
 
   public function transaction(Request $request, string $id)
   {
-    // dd($request->all());
+    // dd($request->date_pelapor);
     DB::connection();
     try {
       SPHP::updateOrCreate(
         ['dumas_id' => $id],
         ['is_done' => $request->sp2hp2 ? 1 : 0]
       );
+      if ($request->date_pelapor) {
+        Dumas::find($id)->update([
+          'date_pelapor' => $request->date_pelapor
+        ]);
+      }
       Klarifikasi::updateOrCreate(
         ['dumas_id' => $id],
         ['is_done' => $request->klarifikasi ? 1 : 0]
@@ -514,7 +520,7 @@ class DumasController extends Controller
     } else {
       return $this->response_json(500, 'Gagal!', null);
     }
-  } 
+  }
 
   public function endDumas(Request $request, string $id)
   {
@@ -555,7 +561,7 @@ class DumasController extends Controller
   {
     $data = Evidence::find($id);
     $old_evi = $data->file;
-    
+
     $delete = Evidence::find($id)->delete();
     if ($delete) {
       $this->deleteFile($old_evi);
@@ -563,5 +569,5 @@ class DumasController extends Controller
     } else {
       return $this->response_json(500, 'Gagal!', null);
     }
-  } 
+  }
 }

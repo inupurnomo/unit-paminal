@@ -26,7 +26,7 @@ document.addEventListener('DOMContentLoaded', function () {
       calendarsColor = {
         Saksi: 'primary',
         Terlapor: 'success',
-        ETC: 'info'
+        Pelapor: 'warning'
       },
       offcanvasTitle = document.querySelector('.offcanvas-title'),
       btnToggleSidebar = document.querySelector('.btn-toggle-sidebar'),

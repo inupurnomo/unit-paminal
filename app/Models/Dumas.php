@@ -12,6 +12,7 @@ class Dumas extends Model
     protected $fillable = [
       'tanggal',
       'pelapor',
+      'date_pelapor',
       'perihal',
       'dugaan',
       'wujud_perbuatan',

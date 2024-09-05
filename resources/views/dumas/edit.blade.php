@@ -76,6 +76,14 @@
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter your name. </div>
           </div>
+          <div class="col">
+            <div class="form-floating form-floating-outline">
+              <input type="date" name="date_pelapor"class="form-control" id="date_pelapor" placeholder="Tanggal Klarifikasi" value="{{ $dumas->date_pelapor }}">
+              <label for='date_pelapor'>Tanggal Klarifikasi</label>
+              <div class="valid-feedback"> Looks good! </div>
+              <div class="invalid-feedback"> Please enter the date. </div>
+            </div>
+          </div>  
 
           <hr />
           <div class="form-floating form-floating-outline mb-4">
@@ -112,7 +120,7 @@
             </div>  
             <div class="col">
               <div class="form-floating form-floating-outline">
-                <input type="date" name="terlapor_date[]"class="form-control" id="terlapor_date" placeholder="Tanggal Klarifikasi">
+                <input type="date" name="terlapor_date[]"class="form-control" id="terlapor_date" placeholder="Tanggal Klarifikasi" value="{{ $t->date }}">
                 <label for='terlapor_date'>Tanggal Klarifikasi</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please enter the date. </div>

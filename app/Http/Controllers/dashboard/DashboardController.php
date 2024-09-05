@@ -19,20 +19,26 @@ class DashboardController extends Controller
     $unit = Auth::user()->unit_id;
 
     $today = Carbon::today()->format('Y-m-d');
+    $data['pelapor'] = Dumas::where('date_pelapor', $today)
+      ->when($den, function ($query) use ($den, $unit) {
+        return $query->where('den_id', $den)
+          ->where('unit_id', $unit);
+      })
+      ->get();
     $data['saksi'] = Witness::where('date', $today)
       ->when($den, function ($query) use ($den, $unit) {
-        return $query->whereHas('dumas', function($q) use ($den, $unit) {
+        return $query->whereHas('dumas', function ($q) use ($den, $unit) {
           $q->where('den_id', $den)
-          ->where('unit_id', $unit);
+            ->where('unit_id', $unit);
         });
       })->get();
     $data['terlapor'] = Terlapor::where('date', $today)
-    ->when($den, function ($query) use ($den, $unit) {
-      return $query->whereHas('dumas', function($q) use ($den, $unit) {
-        $q->where('den_id', $den)
-        ->where('unit_id', $unit);
-      });
-    })->get();
+      ->when($den, function ($query) use ($den, $unit) {
+        return $query->whereHas('dumas', function ($q) use ($den, $unit) {
+          $q->where('den_id', $den)
+            ->where('unit_id', $unit);
+        });
+      })->get();
 
     $data['dumas_aktif'] = Dumas::where('is_done', 0)
       ->when($den, function ($query) use ($den) {
@@ -49,11 +55,26 @@ class DashboardController extends Controller
   public function getJadwal()
   {
     // Ambil semua data dari Witness dan Terlapor
+    $pelaporData = [];
     $witnessData = [];
     $terlaporData = [];
-    $witnessData = Witness::all()->map(function ($item) {
+
+    $pelaporData = Dumas::where('date_pelapor', '<>', '')->get()->map(function ($item) {
       return [
         'id' => '1' . $item['id'],
+        'url' => url('/') . '/dumas/show/' . $item->id,
+        'title' => $item->pelapor,
+        'start' => $item['date_pelapor'],
+        'allDay' => true,
+        'extendedProps' => [
+          'calendar' => 'Pelapor' // Tentukan 'Saksi' jika berasal dari Witness
+        ]
+      ];
+    });
+
+    $witnessData = Witness::all()->map(function ($item) {
+      return [
+        'id' => '2' . $item['id'],
         'url' => url('/') . '/dumas/show/' . $item->dumas_id,
         'title' => $item->name,
         'start' => $item['date'],
@@ -64,9 +85,9 @@ class DashboardController extends Controller
       ];
     });
 
-    $terlaporData = Terlapor::whereNotNull('date')->get()->map(function ($item) {
+    $terlaporData = Terlapor::where('date', '<>', '')->get()->map(function ($item) {
       return [
-        'id' => '2' . $item['id'],
+        'id' => '3' . $item['id'],
         'url' => url('/') . '/dumas/show/' . $item->dumas_id,
         'title' => $item->name,
         'start' => $item['date'],
@@ -80,7 +101,8 @@ class DashboardController extends Controller
     // dd($witnessData);
 
     // Gabungkan data saksi dan terlapor
-    $combinedData = $terlaporData->merge($witnessData)->toArray();
+    // $combinedData = $pelaporData->merge($witnessData)->merge($terlaporData)->toArray();
+    $combinedData = collect($pelaporData)->merge($witnessData)->merge($terlaporData)->toArray();
 
     return response()->json($combinedData);
   }

@@ -36,27 +36,6 @@ $configData = Helper::appClasses();
 @section('page-script')
 <script src="{{asset('assets/js/dashboards-analytics.js')}}"></script>
 {{-- <script src="{{asset('assets/js/app-calendar-events.js')}}"></script> --}}
-<script>
-  /**
- * App Calendar Events
- */
-
-'use strict';
-
-let events = [
-  {
-    id: 1,
-    url: '/dumas/show/1',
-    title: 'Saksi 1',
-    start: '2024-08-23',
-    allDay: true,
-    extendedProps: {
-      calendar: 'Saksi'
-    }
-  }
-];
-
-</script>
 <script src="{{asset('assets/js/app-calendar.js')}}"></script>
 @endsection
 
@@ -71,6 +50,16 @@ let events = [
             {{-- {{$jadwal}} --}}
             <h3 class="card-title pb-xl-2 h3 mb-4">Agenda Hari Ini</h3>
             <div>
+              <h5>Undangan Pelapor</h5>
+              @foreach ($pelapor as $p)
+              <div class="my-2">
+              • <a href="/dumas/show/{{ $p->id }}" target="_blank" rel="noopener noreferrer" title="Lihat Dumas">{{ $p->pelapor }}</a>
+              </div>
+              @endforeach
+              @if (count($pelapor) == 0)
+              <span>Tidak ada undangan</span>
+              @endif
+              <hr />
               <h5>Undangan Saksi</h5>
               @foreach ($saksi as $s)
               <div class="my-2">
@@ -176,9 +165,9 @@ let events = [
             <input class="form-check-input input-filter" type="checkbox" id="select-terlapor" data-value="terlapor" checked>
             <label class="form-check-label" for="select-terlapor">Terlapor</label>
           </div>
-          <div class="form-check form-check-info">
-            <input class="form-check-input input-filter" type="checkbox" id="select-etc" data-value="etc" checked>
-            <label class="form-check-label" for="select-etc">ETC</label>
+          <div class="form-check form-check-warning">
+            <input class="form-check-input input-filter" type="checkbox" id="select-pelapor" data-value="pelapor" checked>
+            <label class="form-check-label" for="select-pelapor">Pelapor</label>
           </div>
         </div>
       </div>
