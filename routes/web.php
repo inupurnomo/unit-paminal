@@ -46,8 +46,8 @@ Route::middleware(['auth', 'auth.session'])->group(function () {
     Route::get('show/{id}', [DumasController::class, 'show'])->name('dumas.show');
     Route::get('edit/{id}', [DumasController::class, 'edit'])->name('dumas.edit');
     Route::put('update/{id}', [DumasController::class, 'update'])->name('dumas.update');
-    Route::delete('delete/{id}', [DumasController::class, 'destroy'])->name('dumas.destroy');
-    Route::post('{id}', [DumasController::class, 'markDone'])->name('dumas.markDone');
+    Route::delete('{id}', [DumasController::class, 'destroy'])->name('dumas.destroy');
+    Route::put('{id}', [DumasController::class, 'markDone'])->name('dumas.markDone');
     Route::get('history', [DumasController::class, 'history'])->name('dumas.history');
     Route::post('transaction/{id}', [DumasController::class, 'transaction'])->name('dumas.transaction');
     Route::post('progress/{id}', [DumasController::class, 'progress'])->name('progress.add');

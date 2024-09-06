@@ -335,29 +335,36 @@ class DumasController extends Controller
 
     if ($done) {
       if ($dumas->is_done == 1) {
-        notify()->success('Dumas ' . $dumas->pelapor . ' ditandai selesai!');
-        return Redirect::to('/dumas');
+        //   notify()->success('Dumas ' . $dumas->pelapor . ' ditandai selesai!');
+        //   return Redirect::to('/dumas');
+        return $this->response_json(200, 'Dumas ' . $dumas->pelapor . ' ditandai selesai', null);
       } else {
-        DumasStatus::where('dumas_id', $id)->delete();
-        notify()->success('Dumas ' . $dumas->pelapor . ' ditandai belum selesai!');
-        return Redirect::to('/dumas/history');
+        // DumasStatus::where('dumas_id', $id)->delete();
+        // notify()->success('Dumas ' . $dumas->pelapor . ' ditandai belum selesai!');
+        // return Redirect::to('/dumas/history');
+        return $this->response_json(200, 'Dumas ' . $dumas->pelapor . ' ditandai belum selesai', null);
       }
     } else {
-      notify()->error('Dumas gagal dihapus!');
-      return redirect()->back()->withInput();
+      // notify()->error('Gagal!');
+      // return redirect()->back()->withInput();
+      return $this->response_json(200, 'Gagal', null);
     }
   }
 
   public function destroy(string $id)
   {
+    $dumas = Dumas::find($id);
+
     $delete = Dumas::find($id)->delete();
 
     if ($delete) {
-      notify()->success('Dumas berhasil dihapus!');
-      return Redirect::to('/dumas');
+      // notify()->success('Dumas berhasil dihapus!');
+      return $this->response_json(200, 'Dumas '. $dumas->pelapor . ' berhasil dihapus!', null);
+      // return Redirect::to('/dumas');
     } else {
-      notify()->error('Dumas gagal dihapus!');
-      return redirect()->back()->withInput();
+      // notify()->error('Dumas gagal dihapus!');
+      // return redirect()->back()->withInput();
+      return $this->response_json(500, 'Dumas ' . $dumas->pelapor . ' gagal dihapus!', null);
     }
   }
 

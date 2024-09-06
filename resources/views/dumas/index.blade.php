@@ -6,6 +6,7 @@
 {{-- <link rel="stylesheet" href="{{asset('assets/vendor/libs/apex-charts/apex-charts.css')}}" /> --}}
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/select2/select2.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 @endsection
 
 @section('page-style')
@@ -17,11 +18,13 @@
 {{-- <script src="{{asset('assets/vendor/libs/apex-charts/apexcharts.js')}}"></script> --}}
 <script src="{{asset('assets/vendor/libs/select2/select2.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
+<script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 
 @section('page-script')
 {{-- <script src="{{asset('assets/js/cards-analytics.js')}}"></script> --}}
 <script src="{{asset('assets/js/forms-selects.js')}}"></script>
+<script src="{{asset('assets/js/dumas/index.js')}}"></script>
 @endsection
 
 @section('content')
@@ -138,15 +141,8 @@
               <div class="dropdown-menu dropdown-menu-end" aria-labelledby="performanceOverviewDropdown">
                 <a class="dropdown-item" href="{{ route('dumas.show', $item->id) }}">Show</a>
                 <a class="dropdown-item" href="{{ route('dumas.edit', $item->id )}}">Edit</a>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('done-form{{$item->id}}').submit();">Selesai</a>
-                <a class="dropdown-item" href="javascript:void(0);" onclick="event.preventDefault(); document.getElementById('delete-form{{$item->id}}').submit();">Delete</a>
-                <form method="POST" id='done-form{{$item->id}}' action="{{ route('dumas.markDone', $item->id) }}">
-                  @csrf
-                </form>
-                <form method="POST" id='delete-form{{$item->id}}' action="{{ route('dumas.destroy', $item->id) }}">
-                  @csrf
-                  @method('DELETE')
-                </form>
+                <a class="dropdown-item" href="javascript:void(0);" data-id="{{ $item->id }}" onclick="handleDone(this)">Selesai</a>
+                <a class="dropdown-item" href="javascript:void(0);" data-id="{{ $item->id }}" onclick="handleDelete(this)">Delete</a>
               </div>
             </div>
           </div>
