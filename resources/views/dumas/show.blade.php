@@ -548,7 +548,7 @@
                           </div>
                           <div class="d-flex justify-content-between flex-wrap">
                             <div>
-                              <span>{!! nl2br(e($p->value) )!!}</span>
+                              <span>{!! nl2br(e($p->value))!!}</span>
                             </div>
                           </div>
                         </div>
@@ -663,7 +663,7 @@
               <h5>Dokumen BAI Saksi</h5>
               @if (count($dumas->sprin) !== 0 && !$dumas->bai_saksi)
               <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="bai_saksi" class="form-control" id="bs-validation-name" accept="application/pdf">
+                <input type="file" name="bai_saksi" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI SaksiI</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select BAI file. </div>
@@ -719,7 +719,7 @@
               <h5>Dokumen BAI Terlapor</h5>
               @if ($dumas->sp_saksi && !$dumas->bai_terlapor)
               <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="bai_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf">
+                <input type="file" name="bai_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI Terlapor</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select BAI file. </div>
@@ -744,7 +744,7 @@
               <h5>Dokumen Surat Pernyataan Terlapor</h5>
               @if ($dumas->bai_terlapor && !$dumas->sp_terlapor)
               <div class="form-floating form-floating-outline mb-4">
-                <input type="file" name="sp_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf">
+                <input type="file" name="sp_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select SP file. </div>

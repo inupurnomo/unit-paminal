@@ -26,8 +26,7 @@
 
 @section('content')
 
-<h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Dumas History
-</h4>
+<h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Dumas History</h4>
 
 <form action="{{ route('dumas.history') }}" method="GET">
   <div class="row mb-1">
@@ -53,24 +52,27 @@
 
   @if (auth()->user()->username == 'administrator')
   <div class="row">
-    <div class="form-floating form-floating-outline mb-2 col-6">
-      <select id="den" name="den" class="select2 form-select form-select-lg" data-allow-clear="true">
-        <option value="">Pilih Den</option>
-        @foreach ($den as $d)
-            <option value="{{ $d->id }}" {{ app('request')->input('den') == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
-        @endforeach
-      </select>
-      <label for="den">Pilih Den</label>
+    <div class="col-6 mb-2">
+      <div class="form-floating form-floating-outline">
+        <select id="den" name="den" class="select2 form-select form-select-lg" data-allow-clear="true">
+          <option value="">Pilih Den</option>
+          @foreach ($den as $d)
+              <option value="{{ $d->id }}" {{ app('request')->input('den') == $d->id ? 'selected' : '' }}>{{ $d->name }}</option>
+          @endforeach
+        </select>
+        <label for="den">Pilih Den</label>
+      </div>
     </div>
-
-    <div class="form-floating form-floating-outline mb-2 col-6">
-      <select id="unit" name="unit" class="select2 form-select form-select-lg" data-allow-clear="true">
-        <option value="">Pilih Unit</option>
-        @foreach ($unit as $u)
-            <option value="{{ $u->id }}" {{ app('request')->input('unit') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
-        @endforeach
-      </select>
-      <label for="unit">Pilih Unit</label>
+    <div class="col-6 mb-2">
+      <div class="form-floating form-floating-outline">
+        <select id="unit" name="unit" class="select2 form-select form-select-lg" data-allow-clear="true">
+          <option value="">Pilih Unit</option>
+          @foreach ($unit as $u)
+              <option value="{{ $u->id }}" {{ app('request')->input('unit') == $u->id ? 'selected' : '' }}>{{ $u->name }}</option>
+          @endforeach
+        </select>
+        <label for="unit">Pilih Unit</label>
+      </div>
     </div>
   </div>
   @endif
@@ -86,7 +88,7 @@
 
 @if (app('request')->all())
 <div class="mb-4">
-  <span class="">Ditemukan <strong>{{ count($dumas) }}</strong> dumas</span>
+  <span class="">Total <strong>{{ count($dumas) }}</strong> dumas ditemukan.</span>
 </div>
 @endif
 

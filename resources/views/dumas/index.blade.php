@@ -27,6 +27,7 @@
 @section('content')
 
 <h4 class="py-3 mb-4"><span class="text-muted fw-light">Dumas /</span> Daftar Dumas</h4>
+
 <form action="{{ route('dumas') }}" method="GET">
   <div class="row mb-1">
     <div class="col-sm-12 col-md-6 mb-2">
@@ -73,7 +74,6 @@
         <label for="unit">Pilih Unit</label>
       </div>
     </div>
-
   </div>
   @endif
   <div class="col-12 d-grid">
@@ -87,7 +87,7 @@
 </div>
 @if (app('request')->all())
 <div class="mb-4">
-  <span class="">Ditemukan <strong>{{ count($dumas) }}</strong> dumas</span>
+  <span class="">Total <strong>{{ count($dumas) }}</strong> dumas ditemukan.</span>
 </div>
 @endif
 <div class="row gy-4">
