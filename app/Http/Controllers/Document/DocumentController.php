@@ -144,6 +144,7 @@ class DocumentController extends Controller
     if (array_key_exists($table, $tableValue)) {
       $tableName = $tableValue[$table];
       $data = DB::table($tableName)->find($doc_id);
+      $old_doc = $data->file;
     } else {
       return $this->response_json(500, 'Table tidak ditemukan!', null);
     }
@@ -155,6 +156,7 @@ class DocumentController extends Controller
     }
 
     if ($delete) {
+      $this->deleteFile($old_doc);
       return $this->response_json(200, 'Berhasil!', null);
     } else {
       return $this->response_json(500, 'Gagal!', null);

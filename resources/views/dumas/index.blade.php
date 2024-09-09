@@ -179,7 +179,7 @@
             <tr>
               <td>Progress</td>
               <td>:</td>
-              <td>{{ $item->latest_progress->value ?? '-' }}</td>
+              <td>{!! nl2br(e($item->latest_progress->value ?? '-' )) !!}</td>
             </tr>
           </tbody>
         </table>

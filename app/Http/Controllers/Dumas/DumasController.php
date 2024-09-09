@@ -354,11 +354,13 @@ class DumasController extends Controller
   public function destroy(string $id)
   {
     $dumas = Dumas::find($id);
+    $old_file = $dumas->nd->file;
 
     $delete = Dumas::find($id)->delete();
 
     if ($delete) {
       // notify()->success('Dumas berhasil dihapus!');
+      $this->deleteFile($old_file);
       return $this->response_json(200, 'Dumas '. $dumas->pelapor . ' berhasil dihapus!', null);
       // return Redirect::to('/dumas');
     } else {

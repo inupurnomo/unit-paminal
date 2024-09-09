@@ -84,6 +84,7 @@
 <script src="{{asset('assets/js/forms-typeahead.js')}}"></script>
 
 <script src="{{asset('assets/js/dumas/show.js')}}"></script>
+<script src="{{asset('assets/js/custom-dropzone.js')}}"></script>
 <script>
   $(document).ready(function () {
   var no = 1;
@@ -601,17 +602,28 @@
               <h5>Dokumen SPRIN</h5>
               @if ($dumas->nd && count($dumas->sprin) === 0)
               <div class="row">
-                <div class="col-sm-12 col-md-6">
-                  <div class="form-floating form-floating-outline mb-4">
+                <div class="col-12">
+                  <div class="mb-4">
+                    <label for="sprin_file" class="mb-1">Dokumen SPRIN</label>
+                    <div class="box">
+                      <label>
+                          <strong>Choose files</strong>
+                          <span>or drag them here.</span>
+                          <input class="box__file" type="file" name="sprin_file" id="sprin_file" required />
+                      </label>
+                      <div class="file-list"></div>
+                    </div>
+                  </div>
+                 {{-- <div class="form-floating form-floating-outline mb-4">
                     <input type="file" name="sprin_file" class="form-control" id="bs-validation-name" accept="application/pdf">
                     <label for="bs-validation-name">Dokumen SPRIN</label>
                     <div class="valid-feedback"> Looks good! </div>
                     <div class="invalid-feedback"> Please select ND file. </div>
-                  </div>
+                  </div> --}}
                 </div>
-                <div class="col-sm-12 col-md-6">
+                <div class="col-12">
                   <div class="form-floating form-floating-outline mb-4">
-                    <input type="date" name="sprin_date" class="form-control" id="bs-validation-date">
+                    <input type="date" name="sprin_date" class="form-control" id="bs-validation-date" required>
                     <label for="bs-validation-date">Berlaku Hingga</label>
                     <div class="valid-feedback"> Looks good! </div>
                     <div class="invalid-feedback"> Please select date. </div>
@@ -662,12 +674,25 @@
 
               <h5>Dokumen BAI Saksi</h5>
               @if (count($dumas->sprin) !== 0 && !$dumas->bai_saksi)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="bai_saksi" class="mb-1">BAI Saksi</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="bai_saksi" id="bai_saksi" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select BAI file. </div>
+              </div>
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="bai_saksi" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI SaksiI</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select BAI file. </div>
-              </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->bai_saksi)
@@ -687,12 +712,25 @@
 
               <h5>Dokumen Surat Pernyataan Saksi</h5>
               @if ($dumas->bai_saksi && !$dumas->sp_saksi)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="sp_saksi" class="mb-1">Surat Pernyataan Saksi</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="sp_saksi" id="sp_saksi" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select SP file. </div>
+              </div>
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="sp_saksi" class="form-control" id="bs-validation-name" accept="application/pdf">
                 <label for="bs-validation-name">Dokumen Surat Pernyataan</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select SP file. </div>
-              </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->sp_saksi)
@@ -718,12 +756,25 @@
 
               <h5>Dokumen BAI Terlapor</h5>
               @if ($dumas->sp_saksi && !$dumas->bai_terlapor)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="bai_terlapor" class="mb-1">BAI Terlapor</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="bai_terlapor" id="bai_terlapor" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select BAI file. </div>
+              </div>
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="bai_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI Terlapor</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select BAI file. </div>
-              </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->bai_terlapor)
@@ -743,12 +794,26 @@
 
               <h5>Dokumen Surat Pernyataan Terlapor</h5>
               @if ($dumas->bai_terlapor && !$dumas->sp_terlapor)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="bai_saksi" class="mb-1">Surat Pernyataan Terlapor</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="sp_terlapor" id="sp_terlapor" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select SP file. </div>
+              </div>
+
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="sp_terlapor" class="form-control" id="bs-validation-name" accept="application/pdf, .doc, .docx">
                 <label for="bs-validation-name">Dokumen BAI</label>
                 <div class="valid-feedback"> Looks good! </div>
                 <div class="invalid-feedback"> Please select SP file. </div>
-              </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->sp_terlapor)
@@ -774,12 +839,25 @@
 
               <h5>Dokumen ND LHP</h5>
               @if ($dumas->sp_terlapor && !$dumas->nd_lhp)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="nd_lhp" class="mb-1">ND LHP</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="nd_lhp" id="nd_lhp" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select ND file. </div>
+              </div>
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="nd_lhp" class="form-control" id="bs-validation-name" accept="application/pdf">
                 <label for="bs-validation-name">Dokumen ND LHP</label>
                 <div class="valid-feedback"> Looks good! </div>
-                <div class="invalid-feedback"> Please select SP file. </div>
-              </div>
+                <div class="invalid-feedback"> Please select ND file. </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->nd_lhp)
@@ -805,12 +883,25 @@
 
               <h5>Dokumen ND LHG</h5>
               @if ($dumas->nd_lhp && !$dumas->nd_lhg)
-              <div class="form-floating form-floating-outline mb-4">
+              <div class="mb-4">
+                <label for="sp_saksi" class="mb-1">ND LHG</label>
+                <div class="box">
+                  <label>
+                      <strong>Choose files</strong>
+                      <span>or drag them here.</span>
+                      <input class="box__file" type="file" name="nd_lhg" id="nd_;hg" />
+                  </label>
+                  <div class="file-list"></div>
+                </div>
+                <div class="valid-feedback"> Looks good! </div>
+                <div class="invalid-feedback"> Please select ND file. </div>
+              </div>
+              {{-- <div class="form-floating form-floating-outline mb-4">
                 <input type="file" name="nd_lhg" class="form-control" id="bs-validation-name" accept="application/pdf">
                 <label for="bs-validation-name">Dokumen ND LHG</label>
                 <div class="valid-feedback"> Looks good! </div>
-                <div class="invalid-feedback"> Please select SP file. </div>
-              </div>
+                <div class="invalid-feedback"> Please select ND file. </div>
+              </div> --}}
               @else
               <div class="d-flex justify-content-between align-items-center mb-4">
                 @if ($dumas->nd_lhg)

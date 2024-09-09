@@ -13,6 +13,7 @@
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/tagify/tagify.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.css')}}" />
 <link rel="stylesheet" href="{{asset('assets/vendor/libs/typeahead-js/typeahead.css')}}" />
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 @endsection
 
 @section('vendor-script')
@@ -28,6 +29,7 @@
 <script src="{{asset('assets/vendor/libs/bootstrap-select/bootstrap-select.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/typeahead-js/typeahead.js')}}"></script>
 <script src="{{asset('assets/vendor/libs/bloodhound/bloodhound.js')}}"></script>
+<script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
 @endsection
 @section('page-script')
 {{-- <script src="{{asset('assets/js/form-basic-inputs.js')}}"></script> --}}
@@ -37,6 +39,7 @@
 {{-- <script src="{{asset('assets/js/forms-tagify.js')}}"></script> --}}
 <script src="{{asset('assets/js/forms-typeahead.js')}}"></script>
 <script src="{{asset('assets/js/dumas/create.js')}}"></script>
+<script src="{{asset('assets/js/custom-dropzone.js')}}"></script>
 @endsection
 
 @section('content')
@@ -58,12 +61,25 @@
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter ND number. </div>
           </div>
-          <div class="form-floating form-floating-outline mb-4">
+
+          <div class="mb-4">
+            <label for="nd_file" class="mb-1">Dokumen ND</label>
+            <div class="box">
+              <label>
+                  <strong>Choose files</strong>
+                  <span>or drag them here.</span>
+                  <input class="box__file" type="file" name="nd_file" id="nd_file" required />
+              </label>
+              <div class="file-list"></div>
+            </div>
+          </div>
+          
+          {{-- <div class="form-floating form-floating-outline mb-4">
             <input type="file" name="nd_file" class="form-control" id="bs-validation-name" required="" accept="application/pdf" value="{{ old('nd_file') }}">
             <label for="bs-validation-name">Dokumen ND</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please select ND file. </div>
-          </div>
+          </div> --}}
           <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="tanggal" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" value="{{ old('tanggal') }}">
             <label for="flatpickr-date">Tanggal Diterima</label>

@@ -36,6 +36,7 @@
 <script src="{{asset('assets/js/forms-selects.js')}}"></script>
 {{-- <script src="{{asset('assets/js/forms-tagify.js')}}"></script> --}}
 <script src="{{asset('assets/js/forms-typeahead.js')}}"></script>
+<script src="{{asset('assets/js/custom-dropzone.js')}}"></script>
 @endsection
 
 @section('content')
@@ -57,13 +58,28 @@
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please enter ND number. </div>
           </div>
-          <div class="form-floating form-floating-outline mb-4">
+          
+          <div class="mb-4">
+            <label for="nd_file" class="mb-1">Dokumen ND</label>
+            <div class="box mb-1">
+              <label>
+                  <strong>Choose files</strong>
+                  <span>or drag them here.</span>
+                  <input class="box__file" type="file" name="nd_file" id="nd_file" />
+              </label>
+              <div class="file-list"></div>
+            </div>
+            <div class="">ND Saat ini: <a href="{{$dumas->nd->file}}" target="_blank" title="Lihat Dokumen">{{ $dumas->nd->number }}</a></div>
+          </div>
+
+
+          {{-- <div class="form-floating form-floating-outline mb-4">
             <input type="file" name="nd_file" class="form-control" id="bs-validation-name" accept="application/pdf">
             <label for="bs-validation-name">Dokumen ND</label>
             <div class="valid-feedback"> Looks good! </div>
             <div class="invalid-feedback"> Please select ND file. </div>
-            <div class="mt-2">ND Saat ini: <a href="{{$dumas->nd->file}}" target="_blank" title="Litat Dokumen">{{ $dumas->nd->number }}</a></div>
-          </div>
+            <div class="mt-2">ND Saat ini: <a href="{{$dumas->nd->file}}" target="_blank" title="Lihat Dokumen">{{ $dumas->nd->number }}</a></div>
+          </div> --}}
           <div class="form-floating form-floating-outline mb-4">
             <input type="text" name="tanggal" class="form-control flatpickr-input active" placeholder="YYYY-MM-DD" id="flatpickr-date" readonly="readonly" value="{{ $dumas->tanggal }}">
             <label for="flatpickr-date">Tanggal Diterima</label>
